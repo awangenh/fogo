@@ -1,0 +1,1717 @@
+% Created useful \resetsubcounters from the code of \stepcounter.
+\newcommand{\resetsubcounters}[1]{%
+  \begingroup
+    \let\@elt\@stpelt
+    \csname cl@#1\endcsname
+  \endgroup}
+
+%\setcounter{chapter}{0}
+\resetsubcounters{chapter}
+\gdef\thechapter{A}
+
+
+\chapter*{Anexos}
+\pdfbookmark[0]{Anexos}{Anexos}
+
+%---------------------------------------------------%
+%---------------------------------------------------%
+
+\section{Parâmetros dos algoritmos testados com as imagens selecionadas e avaliadas}
+\label{anexo:parametros}
+
+\begin{table}[top]
+\centering
+\caption{Os parâmetros específicos de cada algoritmo testado que foram selecionados como aqueles que 
+produzem uma melhor segmentação seguindo critérios apresentados em seções anteriores.}
+{\footnotesize \begin{tabular}{|l||r|r|r|r|r|r|r|r|}
+	\hline
+    & \multicolumn{2}{|c|}{\textbf{CSCGNM}} & \multicolumn{2}{|c|}{\textbf{MSGNM}} & 
+\multicolumn{2}{|c|}{\textbf{EDISONGNM}} & \multicolumn{2}{|c|}{\textbf{WSGNM}}\\
+    \hline
+    & \textbf{$T_{cp}$} & \textbf{$T_{rp}$} & \textbf{$T_{cp}$} & \textbf{$T_{rp}$} & 
+\textbf{$T_{cp}$} & \textbf{$T_{rp}$} & \textbf{$T_{cp}$} & \textbf{$T_{rp}$} \\
+    \hline
+    \textbf{118035} & 0.065 & 0.035 & 0.055 & 0.060 & 0.060 & 0.050 & 0.010 & 0.010 \\
+    \textbf{143090} & 0.035 & 0.015 & 0.035 & 0.045 & 0.030 & 0.035 & 0.070 & 0.015 \\
+    \textbf{15088} & 0.045 & 0.060 & 0.040 & 0.045 & 0.035 & 0.060 & 0.010 & 0.010 \\
+    \textbf{196073} & 0.015 & 0.065 & 0.020 & 0.060 & 0.020 & 0.055 & 0.050 & 0.015 \\
+    \textbf{2092} & 0.025 & 0.055 & 0.040 & 0.035 & 0.030 & 0.045 & 0.060 & 0.020 \\
+    \textbf{22090} & 0.025 & 0.065 & 0.020 & 0.070 & 0.025 & 0.065 & 0.010 & 0.010 \\
+    \textbf{24004} & 0.035 & 0.025 & 0.035 & 0.045 & 0.060 & 0.035 & 0.030 & 0.020 \\
+    \textbf{253036} & 0.065 & 0.020 & 0.055 & 0.045 & 0.060 & 0.060 & 0.010 & 0.015 \\
+    \textbf{310007} & 0.030 & 0.065 & 0.040 & 0.055 & 0.035 & 0.045 & 0.030 & 0.010 \\
+    \textbf{368078} & 0.050 & 0.065 & 0.055 & 0.070 & 0.065 & 0.070 & 0.010 & 0.015 \\
+    \textbf{42049} & 0.065 & 0.045 & 0.065 & 0.060 & 0.050 & 0.070 & 0.040 & 0.020 \\
+    \textbf{46076} & 0.035 & 0.060 & 0.040 & 0.065 & 0.045 & 0.045 & 0.065 & 0.035 \\
+    \textbf{48055} & 0.035 & 0.055 & 0.045 & 0.065 & 0.050 & 0.055 & 0.4 & 0.55 \\
+    \textbf{60079} & 0.015 & 0.060 & 0.020 & 0.060 & 0.025 & 0.030 & 0.010 & 0.020 \\
+    \textbf{68077} & 0.040 & 0.060 & 0.045 & 0.060 & 0.040 & 0.065 & 0.040 & 0.010 \\
+    \textbf{80099} & 0.015 & 0.055 & 0.055 & 0.040 & 0.050 & 0.030 & 0.070 & 0.015 \\
+    \hline    
+    \hline
+    & \textbf{CSC} & \textbf{MS} & \multicolumn{2}{|c|}{\textbf{Edison}} & \textbf{WS} & 
+\textbf{RHSEG} & &  \\
+    \hline
+    & \textbf{Limiar} & \textbf{Lambda} & \textbf{SR} & \textbf{SS} & \textbf{Nível} & 
+\textbf{Nível} & & \\
+    \hline
+    \hline
+    \textbf{118035} & 60 & 10000 & 20 & 8 & 0 & 18 & & \\
+    \textbf{143090} & 70 & 10500 & 13 & 8 & 0.01 & 13 & & \\
+    \textbf{15088} & 80 & 15000 & 14 & 8 & 0.01 & 17 & & \\
+    \textbf{196073} & 50 & 3000 & 5 & 8 & 0.01 & 12 & & \\
+    \textbf{2092} & 60 & 14000 & 16 & 8 & 0.01 & 27 & & \\
+    \textbf{22090} & 40 & 11000 & 10 & 8 & 0.01 & 11 & & \\
+    \textbf{24004} & 50 & 12000 & 12 & 8 & 0.01 & 22 & & \\
+    \textbf{253036} & 60 & 11500 & 19 & 8 & 0.01 & 44 & & \\
+    \textbf{310007} & 60 & 8000 & 19 & 8 & 0.01 & 13 & & \\
+    \textbf{368078} & 90 & 11000 & 14 & 8 & 0.01 & 30 & & \\
+    \textbf{42049} & 100 & 14500 & 20 & 8 & 0.01 & 29 & & \\
+    \textbf{46076} & 70 & 8000 & 19 & 8 & 0.01 & 28 & & \\
+    \textbf{48055} & 70 & 11500 & 19 & 8 & 0.01 & 16 & & \\
+    \textbf{60079} & 40 & 10500 & 9 & 8 & 0.01 & 45 & & \\
+    \textbf{68077} & 90 & 11000 & 21 & 8 & 0.01 & 16 & & \\
+    \textbf{80099} & 40 & 10000 & 15 & 8 & 0.01 & 19 & & \\
+\hline
+\end{tabular}}
+\end{table}
+
+\clearpage
+
+%---------------------------------------------------%
+%---------------------------------------------------%
+
+\section{Resultados obtidos com cada conjunto de imagens para cada um de seus respectivos ground 
+truths}
+\label{anexo:gts}
+
+\subsection{Rand}
+
+%----------------------- CSC+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por CSC+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.037 & 0.012 & 0.022 & 0.038 & 0.180 & 0.016 \\
+    0.032 & 0.254 & 0.015 & 0.021 & 0.163 & 0.520 \\
+    0.032 & 0.010 & 0.028 & 0.010 & 0.174 & 0.019 \\
+    0.031 & 0.016 & 0.023 & 0.075 & 0.178 & 0.019 \\
+    0.034 & 0.011 & 0.021 & 0.041 & 0.189 & 0.020 \\
+     & 0.011 &  &  & 0.176 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.033 & 0.052 & 0.022 & 0.037 & 0.177 & 0.119 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.099 & 0.005 & 0.025 & 0.009 & 0.224 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.057 & 0.117 & 0.293 & 0.117 & 0.096 & 0.075 \\
+    0.059 & 0.120 & 0.129 & 0.098 & 0.095 & 0.138 \\
+    0.061 & 0.121 & 0.309 & 0.117 & 0.095 & 0.044 \\
+    0.057 & 0.116 & 0.132 & 0.093 & 0.096 & 0.068 \\
+    0.055 & 0.123 & 0.054 & 0.098 & 0.101 & 0.045 \\
+    0.044 &  &  &  &  & 0.128 \\
+    0.056 &  &  &  &  & 0.057 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.056 & 0.119 & 0.183 & 0.105 & 0.097 & 0.079 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.003 & 0.112 & 0.012 & 0.003 & 0.039 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.049 & 0.060 & 0.102 & 0.067 &  &  \\
+    0.050 & 0.129 & 0.136 & 0.125 &  &  \\
+    0.054 & 0.064 & 0.083 & 0.051 &  &  \\
+    0.069 & 0.061 & 0.155 & 0.154 &  &  \\
+    0.024 & 0.106 & 0.067 & 0.060 &  &  \\
+    0.049 & 0.063 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.049 & 0.080 & 0.109 & 0.091 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.014 & 0.029 & 0.036 & 0.045 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- MS+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por M\&S+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.031 & 0.014 & 0.020 & 0.076 & 0.077 & 0.012 \\
+    0.026 & 0.256 & 0.018 & 0.057 & 0.065 & 0.513 \\
+    0.026 & 0.013 & 0.025 & 0.050 & 0.087 & 0.013 \\
+    0.024 & 0.019 & 0.021 & 0.110 & 0.085 & 0.012 \\
+    0.027 & 0.014 & 0.019 & 0.077 & 0.108 & 0.015 \\
+     & 0.014 &  &  & 0.088 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.027 & 0.055 & 0.021 & 0.074 & 0.085 & 0.113 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.098 & 0.003 & 0.023 & 0.014 & 0.224 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.108 & 0.114 & 0.296 & 0.135 & 0.111 & 0.076 \\
+    0.109 & 0.118 & 0.131 & 0.117 & 0.111 & 0.139 \\
+    0.112 & 0.118 & 0.311 & 0.135 & 0.111 & 0.042 \\
+    0.108 & 0.127 & 0.132 & 0.110 & 0.112 & 0.066 \\
+    0.106 & 0.119 & 0.047 & 0.116 & 0.114 & 0.043 \\
+    0.096 &  &  &  &  & 0.129 \\
+    0.106 &  &  &  &  & 0.055 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.106 & 0.119 & 0.184 & 0.123 & 0.112 & 0.079 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.005 & 0.115 & 0.012 & 0.001 & 0.040 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.053 & 0.078 & 0.086 & 0.065 &  &  \\
+    0.052 & 0.111 & 0.126 & 0.120 &  &  \\
+    0.059 & 0.080 & 0.061 & 0.051 &  &  \\
+    0.066 & 0.078 & 0.184 & 0.152 &  &  \\
+    0.025 & 0.088 & 0.051 & 0.059 &  &  \\
+    0.053 & 0.080 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.051 & 0.086 & 0.102 & 0.090 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.014 & 0.013 & 0.055 & 0.044 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Edison+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Edison+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.024 & 0.253 & 0.017 & 0.039 & 0.070 & 0.513 \\
+    0.032 & 0.011 & 0.019 & 0.035 & 0.080 & 0.014 \\
+    0.030 & 0.011 & 0.015 & 0.021 & 0.081 & 0.014 \\
+    0.023 & 0.011 & 0.027 & 0.008 & 0.081 & 0.013 \\
+    0.027 & 0.018 & 0.017 & 0.074 & 0.087 & 0.015 \\
+     & 0.012 &  &  & 0.081 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.027 & 0.053 & 0.019 & 0.035 & 0.080 & 0.114 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.004 & 0.098 & 0.004 & 0.025 & 0.005 & 0.223 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.103 & 0.138 & 0.149 & 0.132 & 0.093 & 0.062 \\
+    0.102 & 0.118 & 0.131 & 0.113 & 0.095 & 0.068 \\
+    0.099 & 0.123 & 0.299 & 0.106 & 0.095 & 0.036 \\
+    0.102 & 0.120 & 0.060 & 0.132 & 0.099 & 0.040 \\
+    0.105 & 0.126 & 0.284 & 0.112 & 0.094 & 0.056 \\
+    0.100 &  &  &  &  & 0.121 \\
+    0.105 &  &  &  &  & 0.131 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.102 & 0.125 & 0.185 & 0.119 & 0.095 & 0.073 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.008 & 0.103 & 0.012 & 0.002 & 0.038 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.052 & 0.046 & 0.174 & 0.133 &  &  \\
+    0.051 & 0.150 & 0.123 & 0.057 &  &  \\
+    0.068 & 0.050 & 0.049 & 0.076 &  &  \\
+    0.054 & 0.046 & 0.061 & 0.154 &  &  \\
+    0.056 & 0.132 & 0.085 & 0.064 &  &  \\
+    0.024 & 0.049 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.051 & 0.079 & 0.099 & 0.097 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.015 & 0.049 & 0.051 & 0.044 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- WS+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por WS+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.060 & 0.005 & 0.024 & 0.036 & 0.100 & 0.012 \\
+    0.063 & 0.251 & 0.022 & 0.040 & 0.125 & 0.014 \\
+    0.059 & 0.013 & 0.024 & 0.076 & 0.085 & 0.013 \\
+    0.058 & 0.006 & 0.018 & 0.022 & 0.099 & 0.515 \\
+    0.058 & 0.007 & 0.031 & 0.009 & 0.089 & 0.010 \\
+     & 0.007 &  &  & 0.081 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.060 & 0.048 & 0.024 & 0.037 & 0.097 & 0.113 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.100 & 0.005 & 0.025 & 0.016 & 0.225 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.072 & 0.509 & 0.344 & 0.358 & 0.178 & 0.089 \\
+    0.073 & 0.515 & 0.181 & 0.377 & 0.179 & 0.146 \\
+    0.076 & 0.510 & 0.359 & 0.358 & 0.178 & 0.056 \\
+    0.071 & 0.528 & 0.080 & 0.378 & 0.179 & 0.079 \\
+    0.070 & 0.500 & 0.103 & 0.377 & 0.180 & 0.059 \\
+    0.057 &  &  &  &  & 0.136 \\
+    0.069 &  &  &  &  & 0.071 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.070 & 0.512 & 0.213 & 0.369 & 0.179 & 0.091 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.006 & 0.010 & 0.131 & 0.011 & 0.001 & 0.036 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.041 & 0.102 & 0.087 & 0.040 &  &  \\
+    0.043 & 0.224 & 0.122 & 0.098 &  &  \\
+    0.045 & 0.103 & 0.062 & 0.062 &  &  \\
+    0.064 & 0.105 & 0.176 & 0.169 &  &  \\
+    0.041 & 0.199 & 0.051 & 0.072 &  &  \\
+    0.040 & 0.102 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.046 & 0.139 & 0.099 & 0.088 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.009 & 0.057 & 0.051 & 0.050 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- CSC -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por \textit{Color Structure Code}.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.067 & 0.017 & 0.027 & 0.038 & 0.340 & 0.026 \\
+    0.063 & 0.261 & 0.031 & 0.021 & 0.358 & 0.528 \\
+    0.065 & 0.017 & 0.023 & 0.010 & 0.325 & 0.029 \\
+    0.064 & 0.023 & 0.029 & 0.074 & 0.338 & 0.029 \\
+    0.062 & 0.017 & 0.026 & 0.041 & 0.309 & 0.030 \\
+     & 0.017 &  &  & 0.324 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.064 & 0.059 & 0.027 & 0.037 & 0.332 & 0.128 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.099 & 0.003 & 0.024 & 0.017 & 0.223 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.093 & 0.126 & 0.300 & 0.205 & 0.429 & 0.241 \\
+    0.094 & 0.134 & 0.137 & 0.186 & 0.428 & 0.220 \\
+    0.097 & 0.129 & 0.315 & 0.206 & 0.427 & 0.261 \\
+    0.093 & 0.146 & 0.126 & 0.187 & 0.429 & 0.243 \\
+    0.091 & 0.129 & 0.064 & 0.187 & 0.435 & 0.229 \\
+    0.080 &  &  &  &  & 0.212 \\
+    0.092 &  &  &  &  & 0.242 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.091 & 0.133 & 0.188 & 0.194 & 0.429 & 0.235 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.008 & 0.113 & 0.010 & 0.003 & 0.016 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.051 & 0.106 & 0.102 & 0.311 &  &  \\
+    0.051 & 0.148 & 0.136 & 0.371 &  &  \\
+    0.055 & 0.112 & 0.083 & 0.291 &  &  \\
+    0.070 & 0.108 & 0.154 & 0.302 &  &  \\
+    0.026 & 0.160 & 0.067 & 0.305 &  &  \\
+    0.050 & 0.110 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.051 & 0.124 & 0.108 & 0.316 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.014 & 0.023 & 0.036 & 0.032 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- MS -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Mumford \& Shah.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.048 & 0.259 & 0.051 & 0.249 & 0.189 & 0.024 \\
+    0.043 & 0.189 & 0.045 & 0.266 & 0.175 & 0.530 \\
+    0.043 & 0.259 & 0.055 & 0.251 & 0.179 & 0.027 \\
+    0.042 & 0.263 & 0.052 & 0.290 & 0.196 & 0.027 \\
+    0.043 & 0.260 & 0.050 & 0.249 & 0.199 & 0.027 \\
+     & 0.259 &  &  & 0.181 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.044 & 0.248 & 0.051 & 0.261 & 0.186 & 0.127 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.029 & 0.004 & 0.018 & 0.010 & 0.226 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.233 & 0.277 & 0.335 & 0.123 & 0.133 & 0.124 \\
+    0.233 & 0.279 & 0.178 & 0.106 & 0.133 & 0.183 \\
+    0.234 & 0.281 & 0.351 & 0.123 & 0.133 & 0.095 \\
+    0.233 & 0.275 & 0.211 & 0.102 & 0.134 & 0.113 \\
+    0.233 & 0.280 & 0.110 & 0.104 & 0.136 & 0.100 \\
+    0.217 &  &  &  &  & 0.174 \\
+    0.234 &  &  &  &  & 0.099 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.231 & 0.278 & 0.237 & 0.112 & 0.134 & 0.127 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.006 & 0.002 & 0.103 & 0.010 & 0.001 & 0.037 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.140 & 0.153 & 0.083 & 0.244 &  &  \\
+    0.147 & 0.159 & 0.116 & 0.303 &  &  \\
+    0.144 & 0.157 & 0.063 & 0.219 &  &  \\
+    0.166 & 0.154 & 0.170 & 0.115 &  &  \\
+    0.113 & 0.135 & 0.047 & 0.210 &  &  \\
+    0.138 & 0.156 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.141 & 0.152 & 0.096 & 0.218 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.017 & 0.009 & 0.049 & 0.068 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Edison -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Edison.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.026 & 0.255 & 0.043 & 0.040 & 0.079 & 0.512 \\
+    0.031 & 0.010 & 0.045 & 0.037 & 0.061 & 0.008 \\
+    0.028 & 0.010 & 0.047 & 0.018 & 0.061 & 0.007 \\
+    0.025 & 0.012 & 0.039 & 0.009 & 0.060 & 0.008 \\
+    0.026 & 0.014 & 0.042 & 0.073 & 0.063 & 0.010 \\
+     & 0.011 &  &  & 0.067 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.027 & 0.052 & 0.043 & 0.036 & 0.065 & 0.109 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.100 & 0.003 & 0.024 & 0.007 & 0.225 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.127 & 0.118 & 0.106 & 0.082 & 0.435 & 0.062 \\
+    0.127 & 0.124 & 0.157 & 0.105 & 0.436 & 0.070 \\
+    0.124 & 0.122 & 0.337 & 0.108 & 0.437 & 0.035 \\
+    0.126 & 0.118 & 0.080 & 0.083 & 0.444 & 0.042 \\
+    0.111 & 0.119 & 0.321 & 0.105 & 0.434 & 0.047 \\
+    0.125 &  &  &  &  & 0.123 \\
+    0.130 &  &  &  &  & 0.133 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.124 & 0.120 & 0.200 & 0.096 & 0.437 & 0.073 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.006 & 0.003 & 0.121 & 0.013 & 0.004 & 0.039 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.106 & 0.031 & 0.029 & 0.123 &  &  \\
+    0.106 & 0.161 & 0.104 & 0.054 &  &  \\
+    0.126 & 0.029 & 0.124 & 0.067 &  &  \\
+    0.104 & 0.029 & 0.168 & 0.159 &  &  \\
+    0.110 & 0.139 & 0.103 & 0.065 &  &  \\
+    0.094 & 0.031 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.108 & 0.070 & 0.105 & 0.094 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.010 & 0.063 & 0.050 & 0.045 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- WS -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por \textit{Watershed}.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.046 & 0.006 & 0.022 & 0.048 & 0.248 & 0.026 \\
+    0.050 & 0.251 & 0.020 & 0.051 & 0.267 & 0.028 \\
+    0.052 & 0.014 & 0.022 & 0.068 & 0.233 & 0.026 \\
+    0.051 & 0.006 & 0.016 & 0.017 & 0.247 & 0.513 \\
+    0.047 & 0.007 & 0.029 & 0.020 & 0.212 & 0.025 \\
+     & 0.007 &  &  & 0.230 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.049 & 0.048 & 0.022 & 0.041 & 0.240 & 0.124 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.099 & 0.005 & 0.022 & 0.019 & 0.218 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.035 & 0.546 & 0.340 & 0.113 & 0.202 & 0.081 \\
+    0.038 & 0.552 & 0.177 & 0.128 & 0.205 & 0.143 \\
+    0.039 & 0.546 & 0.355 & 0.113 & 0.203 & 0.047 \\
+    0.036 & 0.566 & 0.083 & 0.127 & 0.204 & 0.071 \\
+    0.033 & 0.536 & 0.097 & 0.127 & 0.203 & 0.050 \\
+    0.039 &  &  &  &  &  \\
+    0.033 &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.036 & 0.549 & 0.210 & 0.122 & 0.203 & 0.079 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.011 & 0.130 & 0.008 & 0.001 & 0.039 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.038 & 0.095 & 0.089 & 0.039 &  &  \\
+    0.040 & 0.212 & 0.124 & 0.100 &  &  \\
+    0.043 & 0.100 & 0.061 & 0.059 &  &  \\
+    0.061 & 0.099 & 0.178 & 0.163 &  &  \\
+    0.038 & 0.186 & 0.053 & 0.069 &  &  \\
+    0.038 & 0.095 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.043 & 0.131 & 0.101 & 0.086 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.009 & 0.053 & 0.051 & 0.048 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- JSEG -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por JSEG.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.079 & 0.120 & 0.052 & 0.231 & 0.195 & 0.511 \\
+    0.088 & 0.273 & 0.053 & 0.231 & 0.217 & 0.008 \\
+    0.088 & 0.274 & 0.047 & 0.238 & 0.227 & 0.007 \\
+    0.079 & 0.272 & 0.057 & 0.223 & 0.226 & 0.008 \\
+    0.081 & 0.276 & 0.053 & 0.271 & 0.247 & 0.010 \\
+     & 0.274 &  &  & 0.212 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.083 & 0.248 & 0.052 & 0.239 & 0.221 & 0.108 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.063 & 0.004 & 0.019 & 0.017 & 0.225 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.154 & 0.495 & 0.207 & 0.090 & 0.227 & 0.123 \\
+    0.154 & 0.473 & 0.175 & 0.072 & 0.228 & 0.136 \\
+    0.152 & 0.478 & 0.343 & 0.067 & 0.226 & 0.102 \\
+    0.153 & 0.476 & 0.106 & 0.092 & 0.228 & 0.115 \\
+    0.140 & 0.482 & 0.328 & 0.073 & 0.228 & 0.114 \\
+    0.152 &  &  &  &  & 0.185 \\
+    0.157 &  &  &  &  & 0.191 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.152 & 0.481 & 0.232 & 0.079 & 0.227 & 0.138 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.009 & 0.102 & 0.011 & 0.001 & 0.036 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.059 & 0.193 & 0.194 & 0.316 &  &  \\
+    0.054 & 0.099 & 0.109 & 0.232 &  &  \\
+    0.065 & 0.194 & 0.065 & 0.255 &  &  \\
+    0.057 & 0.194 & 0.082 & 0.150 &  &  \\
+    0.061 & 0.083 & 0.086 & 0.221 &  &  \\
+    0.030 & 0.197 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.054 & 0.160 & 0.107 & 0.235 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.012 & 0.054 & 0.051 & 0.060 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- RHSEG -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por RHSEG.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.083 & 0.277 & 0.312 & 0.276 & 0.231 & 0.577 \\
+    0.084 & 0.036 & 0.310 & 0.290 & 0.235 & 0.073 \\
+    0.082 & 0.032 & 0.306 & 0.294 & 0.242 & 0.073 \\
+    0.088 & 0.031 & 0.311 & 0.294 & 0.241 & 0.071 \\
+    0.084 & 0.033 & 0.314 & 0.293 & 0.214 & 0.075 \\
+     & 0.030 &  &  & 0.260 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.084 & 0.073 & 0.311 & 0.289 & 0.237 & 0.174 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.100 & 0.003 & 0.008 & 0.015 & 0.225 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.217 & 0.126 & 0.137 & 0.146 & 0.249 & 0.120 \\
+    0.217 & 0.130 & 0.316 & 0.119 & 0.248 & 0.115 \\
+    0.216 & 0.122 & 0.301 & 0.147 & 0.248 & 0.137 \\
+    0.204 & 0.128 & 0.055 & 0.131 & 0.247 & 0.120 \\
+    0.216 & 0.131 & 0.136 & 0.130 & 0.250 & 0.177 \\
+    0.216 &  &  &  &  & 0.133 \\
+    0.215 &  &  &  &  & 0.169 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.214 & 0.127 & 0.189 & 0.135 & 0.248 & 0.139 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.004 & 0.004 & 0.114 & 0.012 & 0.001 & 0.025 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.053 & 0.241 & 0.146 & 0.201 &  &  \\
+    0.054 & 0.105 & 0.059 & 0.192 &  &  \\
+    0.071 & 0.243 & 0.129 & 0.189 &  &  \\
+    0.054 & 0.242 & 0.094 & 0.262 &  &  \\
+    0.059 & 0.129 & 0.077 & 0.115 &  &  \\
+    0.032 & 0.245 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.054 & 0.201 & 0.101 & 0.192 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.013 & 0.065 & 0.036 & 0.052 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Blobworld -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de Rand para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Blobworld.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.422 & 0.312 & 0.281 & 0.276 & 0.297 & 0.374 \\
+    0.421 & 0.328 & 0.282 & 0.277 & 0.312 & 0.373 \\
+    0.424 & 0.313 & 0.282 & 0.267 & 0.301 & 0.373 \\
+    0.422 & 0.312 & 0.278 & 0.266 & 0.295 & 0.457 \\
+    0.418 & 0.312 & 0.290 & 0.273 & 0.293 & 0.378 \\
+     & 0.310 &  &  & 0.299 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.421 & 0.315 & 0.283 & 0.272 & 0.300 & 0.391 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.007 & 0.004 & 0.005 & 0.007 & 0.037 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.241 & 0.603 & 0.333 & 0.271 & 0.264 & 0.280 \\
+    0.242 & 0.607 & 0.274 & 0.271 & 0.265 & 0.289 \\
+    0.240 & 0.604 & 0.340 & 0.274 & 0.264 & 0.272 \\
+    0.241 & 0.617 & 0.322 & 0.271 & 0.264 & 0.280 \\
+    0.242 & 0.597 & 0.259 & 0.271 & 0.267 & 0.281 \\
+    0.248 &  &  &  &  & 0.289 \\
+    0.243 &  &  &  &  & 0.278 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.242 & 0.606 & 0.305 & 0.272 & 0.265 & 0.281 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.007 & 0.036 & 0.001 & 0.001 & 0.006 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.233 & 0.255 & 0.326 & 0.265 &  &  \\
+    0.231 & 0.179 & 0.333 & 0.319 &  &  \\
+    0.234 & 0.258 & 0.298 & 0.255 &  &  \\
+    0.226 & 0.254 & 0.366 & 0.237 &  &  \\
+    0.221 & 0.189 & 0.318 & 0.255 &  &  \\
+    0.233 & 0.256 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.230 & 0.232 & 0.328 & 0.266 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.005 & 0.037 & 0.025 & 0.031 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+\clearpage
+
+\subsection{BGM}
+
+%----------------------- CSC+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por CSC+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.040 & 0.012 & 0.121 & 0.015 & 0.291 & 0.034 \\
+    0.036 & 0.013 & 0.114 & 0.010 & 0.284 & 0.045 \\
+    0.040 & 0.011 & 0.137 & 0.011 & 0.312 & 0.046 \\
+    0.040 & 0.015 & 0.121 & 0.015 & 0.311 & 0.045 \\
+    0.039 & 0.011 & 0.120 & 0.016 & 0.342 & 0.045 \\
+     & 0.011 &  &  & 0.313 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.039 & 0.012 & 0.123 & 0.014 & 0.309 & 0.043 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.009 & 0.003 & 0.020 & 0.005 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.124 & 0.071 & 0.529 & 0.352 & 0.133 & 0.375 \\
+    0.127 & 0.074 & 0.412 & 0.300 & 0.130 & 0.423 \\
+    0.129 & 0.074 & 0.529 & 0.350 & 0.132 & 0.282 \\
+    0.123 & 0.071 & 0.367 & 0.288 & 0.134 & 0.371 \\
+    0.121 & 0.075 & 0.315 & 0.302 & 0.158 & 0.296 \\
+    0.127 &  &  &  &  & 0.405 \\
+    0.120 &  &  &  &  & 0.331 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.124 & 0.073 & 0.430 & 0.318 & 0.137 & 0.355 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.002 & 0.096 & 0.030 & 0.012 & 0.054 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.239 & 0.125 & 0.236 & 0.207 &  &  \\
+    0.227 & 0.085 & 0.256 & 0.237 &  &  \\
+    0.266 & 0.123 & 0.095 & 0.197 &  &  \\
+    0.263 & 0.123 & 0.244 & 0.194 &  &  \\
+    0.211 & 0.079 & 0.180 & 0.195 &  &  \\
+    0.255 & 0.122 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.243 & 0.109 & 0.202 & 0.206 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.022 & 0.021 & 0.067 & 0.018 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- MS+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por M\&S+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.038 & 0.013 & 0.101 & 0.044 & 0.152 & 0.047 \\
+    0.035 & 0.014 & 0.113 & 0.041 & 0.142 & 0.056 \\
+    0.038 & 0.012 & 0.098 & 0.042 & 0.170 & 0.056 \\
+    0.038 & 0.016 & 0.103 & 0.045 & 0.175 & 0.056 \\
+    0.037 & 0.012 & 0.099 & 0.044 & 0.208 & 0.057 \\
+     & 0.012 &  &  & 0.171 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.037 & 0.013 & 0.103 & 0.043 & 0.170 & 0.054 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.006 & 0.002 & 0.023 & 0.004 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.128 & 0.106 & 0.558 & 0.427 & 0.173 & 0.398 \\
+    0.131 & 0.109 & 0.460 & 0.403 & 0.172 & 0.449 \\
+    0.131 & 0.109 & 0.558 & 0.426 & 0.178 & 0.328 \\
+    0.130 & 0.108 & 0.395 & 0.387 & 0.179 & 0.392 \\
+    0.127 & 0.111 & 0.344 & 0.401 & 0.201 & 0.334 \\
+    0.130 &  &  &  &  & 0.425 \\
+    0.125 &  &  &  &  & 0.366 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.129 & 0.109 & 0.463 & 0.409 & 0.181 & 0.385 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.002 & 0.096 & 0.017 & 0.012 & 0.045 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.275 & 0.155 & 0.293 & 0.210 &  &  \\
+    0.275 & 0.097 & 0.325 & 0.229 &  &  \\
+    0.303 & 0.151 & 0.132 & 0.198 &  &  \\
+    0.298 & 0.151 & 0.372 & 0.193 &  &  \\
+    0.260 & 0.087 & 0.251 & 0.197 &  &  \\
+    0.293 & 0.151 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.284 & 0.132 & 0.275 & 0.206 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.017 & 0.031 & 0.091 & 0.015 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Edison+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Edison+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.038 & 0.017 & 0.059 & 0.017 & 0.090 & 0.053 \\
+    0.039 & 0.016 & 0.061 & 0.016 & 0.106 & 0.053 \\
+    0.039 & 0.015 & 0.073 & 0.010 & 0.114 & 0.047 \\
+    0.039 & 0.017 & 0.090 & 0.011 & 0.113 & 0.053 \\
+    0.036 & 0.020 & 0.058 & 0.016 & 0.136 & 0.053 \\
+     & 0.016 &  &  & 0.102 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.038 & 0.017 & 0.068 & 0.014 & 0.110 & 0.052 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.013 & 0.003 & 0.015 & 0.003 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.165 & 0.121 & 0.336 & 0.442 & 0.156 & 0.352 \\
+    0.157 & 0.123 & 0.414 & 0.407 & 0.157 & 0.341 \\
+    0.152 & 0.121 & 0.547 & 0.389 & 0.153 & 0.260 \\
+    0.163 & 0.119 & 0.302 & 0.444 & 0.175 & 0.254 \\
+    0.164 & 0.120 & 0.547 & 0.405 & 0.150 & 0.310 \\
+    0.153 &  &  &  &  & 0.376 \\
+    0.158 &  &  &  &  & 0.404 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.159 & 0.121 & 0.429 & 0.417 & 0.158 & 0.328 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.005 & 0.002 & 0.115 & 0.024 & 0.010 & 0.057 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.252 & 0.118 & 0.332 & 0.269 &  &  \\
+    0.248 & 0.116 & 0.283 & 0.209 &  &  \\
+    0.269 & 0.117 & 0.192 & 0.239 &  &  \\
+    0.276 & 0.114 & 0.084 & 0.207 &  &  \\
+    0.268 & 0.113 & 0.239 & 0.212 &  &  \\
+    0.217 & 0.117 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.255 & 0.116 & 0.226 & 0.227 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.022 & 0.002 & 0.095 & 0.027 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- WS+GNM -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por WS+GNM.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.027 & 0.005 & 0.129 & 0.012 & 0.285 & 0.017 \\
+    0.027 & 0.007 & 0.127 & 0.013 & 0.310 & 0.018 \\
+    0.027 & 0.010 & 0.130 & 0.012 & 0.252 & 0.017 \\
+    0.027 & 0.005 & 0.131 & 0.010 & 0.284 & 0.017 \\
+    0.025 & 0.006 & 0.140 & 0.011 & 0.243 & 0.014 \\
+     & 0.006 &  &  & 0.237 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.027 & 0.006 & 0.132 & 0.012 & 0.268 & 0.017 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.005 & 0.001 & 0.029 & 0.001 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.103 & 0.437 & 0.498 & 0.194 & 0.342 & 0.362 \\
+    0.106 & 0.440 & 0.387 & 0.195 & 0.340 & 0.408 \\
+    0.109 & 0.439 & 0.500 & 0.194 & 0.345 & 0.275 \\
+    0.103 & 0.442 & 0.287 & 0.196 & 0.346 & 0.364 \\
+    0.102 & 0.436 & 0.286 & 0.195 & 0.354 & 0.310 \\
+    0.106 &  &  &  &  & 0.388 \\
+    0.100 &  &  &  &  & 0.346 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.104 & 0.439 & 0.391 & 0.195 & 0.345 & 0.350 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.002 & 0.106 & 0.001 & 0.005 & 0.046 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.204 & 0.231 & 0.252 & 0.151 &  &  \\
+    0.206 & 0.231 & 0.281 & 0.218 &  &  \\
+    0.225 & 0.230 & 0.099 & 0.162 &  &  \\
+    0.233 & 0.234 & 0.326 & 0.158 &  &  \\
+    0.193 & 0.215 & 0.208 & 0.159 &  &  \\
+    0.216 & 0.231 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.213 & 0.229 & 0.233 & 0.170 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.015 & 0.007 & 0.087 & 0.027 &  & \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- CSC -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por \textit{Color Structured Code}.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.032 & 0.013 & 0.023 & 0.017 & 0.030 & 0.038 \\
+    0.028 & 0.015 & 0.026 & 0.013 & 0.031 & 0.048 \\
+    0.032 & 0.013 & 0.022 & 0.013 & 0.032 & 0.048 \\
+    0.032 & 0.017 & 0.025 & 0.017 & 0.034 & 0.048 \\
+    0.032 & 0.013 & 0.020 & 0.018 & 0.034 & 0.048 \\
+     & 0.012 &  &  & 0.032 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.031 & 0.014 & 0.023 & 0.016 & 0.032 & 0.046 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.002 & 0.002 & 0.002 & 0.002 & 0.004 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.114 & 0.080 & 0.510 & 0.285 & 0.081 & 0.158 \\
+    0.114 & 0.085 & 0.396 & 0.218 & 0.079 & 0.171 \\
+    0.117 & 0.083 & 0.512 & 0.285 & 0.080 & 0.164 \\
+    0.114 & 0.088 & 0.351 & 0.215 & 0.082 & 0.167 \\
+    0.113 & 0.083 & 0.293 & 0.221 & 0.106 & 0.112 \\
+    0.115 &  &  &  &  & 0.146 \\
+    0.112 &  &  &  &  & 0.157 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.114 & 0.084 & 0.412 & 0.245 & 0.086 & 0.154 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.003 & 0.097 & 0.037 & 0.012 & 0.020 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.245 & 0.204 & 0.228 & 0.193 &  &  \\
+    0.225 & 0.167 & 0.255 & 0.271 &  &  \\
+    0.261 & 0.207 & 0.075 & 0.167 &  &  \\
+    0.255 & 0.203 & 0.243 & 0.067 &  &  \\
+    0.212 & 0.173 & 0.160 & 0.167 &  &  \\
+    0.252 & 0.205 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.242 & 0.193 & 0.192 & 0.173 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.019 & 0.018 & 0.075 & 0.073 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- MS -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Mumford \& Shah.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.034 & 0.340 & 0.129 & 0.320 & 0.321 & 0.020 \\
+    0.030 & 0.175 & 0.126 & 0.344 & 0.310 & 0.035 \\
+    0.034 & 0.339 & 0.130 & 0.342 & 0.339 & 0.035 \\
+    0.034 & 0.343 & 0.131 & 0.322 & 0.351 & 0.035 \\
+    0.034 & 0.339 & 0.127 & 0.320 & 0.383 & 0.035 \\
+     & 0.339 &  &  & 0.339 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.033 & 0.313 & 0.129 & 0.330 & 0.341 & 0.032 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.067 & 0.002 & 0.012 & 0.025 & 0.006 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.261 & 0.168 & 0.667 & 0.347 & 0.284 & 0.491 \\
+    0.261 & 0.170 & 0.529 & 0.324 & 0.283 & 0.575 \\
+    0.263 & 0.171 & 0.667 & 0.345 & 0.291 & 0.421 \\
+    0.261 & 0.167 & 0.498 & 0.316 & 0.291 & 0.489 \\
+    0.261 & 0.172 & 0.424 & 0.322 & 0.309 & 0.446 \\
+    0.263 &  &  &  &  & 0.548 \\
+    0.261 &  &  &  &  & 0.451 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.262 & 0.170 & 0.557 & 0.331 & 0.292 & 0.489 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.107 & 0.014 & 0.010 & 0.056 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.148 & 0.350 & 0.220 & 0.496 &  &  \\
+    0.163 & 0.291 & 0.259 & 0.574 &  &  \\
+    0.164 & 0.348 & 0.060 & 0.465 &  &  \\
+    0.167 & 0.346 & 0.319 & 0.339 &  &  \\
+    0.093 & 0.289 & 0.169 & 0.450 &  &  \\
+    0.149 & 0.346 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.147 & 0.328 & 0.205 & 0.465 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.028 & 0.030 & 0.098 & 0.085 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Edison -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Edison.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.042 & 0.011 & 0.021 & 0.017 & 0.051 & 0.008 \\
+    0.042 & 0.009 & 0.023 & 0.016 & 0.056 & 0.008 \\
+    0.042 & 0.008 & 0.025 & 0.011 & 0.064 & 0.006 \\
+    0.042 & 0.010 & 0.021 & 0.011 & 0.062 & 0.008 \\
+    0.041 & 0.013 & 0.019 & 0.016 & 0.086 & 0.009 \\
+     & 0.009 &  &  & 0.051 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.042 & 0.010 & 0.022 & 0.014 & 0.062 & 0.008 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.002 & 0.003 & 0.013 & 0.001 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.104 & 0.111 & 0.318 & 0.069 & 0.030 & 0.327 \\
+    0.102 & 0.118 & 0.420 & 0.075 & 0.031 & 0.322 \\
+    0.101 & 0.114 & 0.536 & 0.069 & 0.031 & 0.238 \\
+    0.103 & 0.112 & 0.309 & 0.072 & 0.067 & 0.252 \\
+    0.104 & 0.113 & 0.534 & 0.075 & 0.029 & 0.284 \\
+    0.103 &  &  &  &  & 0.375 \\
+    0.105 &  &  &  &  & 0.401 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.103 & 0.114 & 0.424 & 0.072 & 0.038 & 0.314 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.003 & 0.111 & 0.003 & 0.016 & 0.061 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.205 & 0.094 & 0.076 & 0.218 &  &  \\
+    0.190 & 0.079 & 0.079 & 0.139 &  &  \\
+    0.217 & 0.073 & 0.060 & 0.153 &  &  \\
+    0.207 & 0.076 & 0.056 & 0.137 &  &  \\
+    0.220 & 0.084 & 0.059 & 0.137 &  &  \\
+    0.188 & 0.074 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.204 & 0.080 & 0.066 & 0.157 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.013 & 0.008 & 0.010 & 0.035 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- WS -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por \textit{Watershed}.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.062 & 0.014 & 0.138 & 0.034 & 0.613 & 0.066 \\
+    0.062 & 0.017 & 0.134 & 0.035 & 0.628 & 0.067 \\
+    0.062 & 0.019 & 0.139 & 0.034 & 0.614 & 0.066 \\
+    0.062 & 0.014 & 0.142 & 0.032 & 0.612 & 0.066 \\
+    0.059 & 0.015 & 0.145 & 0.033 & 0.598 & 0.061 \\
+     & 0.016 &  &  & 0.604 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.062 & 0.016 & 0.140 & 0.034 & 0.611 & 0.065 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.004 & 0.001 & 0.010 & 0.002 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.168 & 0.456 & 0.507 & 0.222 & 0.437 & 0.390 \\
+    0.176 & 0.459 & 0.399 & 0.224 & 0.436 & 0.415 \\
+    0.172 & 0.458 & 0.509 & 0.221 & 0.441 & 0.306 \\
+    0.174 & 0.461 & 0.306 & 0.226 & 0.441 & 0.387 \\
+    0.164 & 0.455 & 0.306 & 0.223 & 0.444 & 0.347 \\
+    0.178 &  &  &  &  &  \\
+    0.163 &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.171 & 0.458 & 0.405 & 0.223 & 0.440 & 0.369 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.006 & 0.002 & 0.101 & 0.002 & 0.003 & 0.043 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.226 & 0.262 & 0.260 & 0.165 &  &  \\
+    0.235 & 0.262 & 0.288 & 0.230 &  &  \\
+    0.249 & 0.262 & 0.110 & 0.172 &  &  \\
+    0.258 & 0.265 & 0.333 & 0.169 &  &  \\
+    0.219 & 0.256 & 0.216 & 0.171 &  &  \\
+    0.240 & 0.262 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.238 & 0.262 & 0.241 & 0.181 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.015 & 0.003 & 0.085 & 0.027 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- JSEG -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por JSEG.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.011 & 0.118 & 0.196 & 0.259 & 0.459 & 0.031 \\
+    0.011 & 0.315 & 0.198 & 0.259 & 0.504 & 0.031 \\
+    0.011 & 0.315 & 0.176 & 0.255 & 0.513 & 0.018 \\
+    0.011 & 0.315 & 0.195 & 0.256 & 0.514 & 0.031 \\
+    0.008 & 0.317 & 0.196 & 0.259 & 0.554 & 0.032 \\
+     & 0.315 &  &  & 0.463 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.010 & 0.282 & 0.192 & 0.258 & 0.501 & 0.028 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.081 & 0.009 & 0.002 & 0.036 & 0.006 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.056 & 0.375 & 0.466 & 0.284 & 0.333 & 0.452 \\
+    0.056 & 0.377 & 0.571 & 0.245 & 0.334 & 0.467 \\
+    0.055 & 0.374 & 0.654 & 0.232 & 0.332 & 0.369 \\
+    0.055 & 0.372 & 0.428 & 0.286 & 0.368 & 0.408 \\
+    0.057 & 0.374 & 0.653 & 0.247 & 0.332 & 0.422 \\
+    0.055 &  &  &  &  & 0.523 \\
+    0.058 &  &  &  &  & 0.544 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.056 & 0.375 & 0.555 & 0.259 & 0.340 & 0.455 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.105 & 0.025 & 0.016 & 0.062 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.227 & 0.478 & 0.469 & 0.614 &  &  \\
+    0.194 & 0.301 & 0.219 & 0.514 &  &  \\
+    0.219 & 0.468 & 0.192 & 0.546 &  &  \\
+    0.225 & 0.469 & 0.105 & 0.382 &  &  \\
+    0.236 & 0.294 & 0.206 & 0.503 &  &  \\
+    0.180 & 0.470 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.214 & 0.413 & 0.238 & 0.512 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.022 & 0.090 & 0.136 & 0.085 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- RHSEG -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por RHSEG.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.020 & 0.010 & 0.081 & 0.444 & 0.559 & 0.024 \\
+    0.017 & 0.013 & 0.077 & 0.493 & 0.600 & 0.024 \\
+    0.020 & 0.008 & 0.064 & 0.505 & 0.575 & 0.024 \\
+    0.020 & 0.008 & 0.079 & 0.512 & 0.574 & 0.017 \\
+    0.020 & 0.009 & 0.079 & 0.505 & 0.550 & 0.024 \\
+     & 0.008 &  &  & 0.612 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.019 & 0.010 & 0.076 & 0.492 & 0.578 & 0.022 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.002 & 0.002 & 0.007 & 0.027 & 0.023 & 0.003 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.323 & 0.076 & 0.477 & 0.397 & 0.444 & 0.383 \\
+    0.326 & 0.079 & 0.582 & 0.325 & 0.444 & 0.341 \\
+    0.322 & 0.076 & 0.582 & 0.398 & 0.464 & 0.405 \\
+    0.323 & 0.078 & 0.387 & 0.339 & 0.443 & 0.394 \\
+    0.322 & 0.080 & 0.406 & 0.338 & 0.443 & 0.406 \\
+    0.322 &  &  &  &  & 0.405 \\
+    0.322 &  &  &  &  & 0.392 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.323 & 0.078 & 0.487 & 0.360 & 0.448 & 0.389 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.002 & 0.093 & 0.035 & 0.009 & 0.023 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.250 & 0.659 & 0.236 & 0.492 &  &  \\
+    0.267 & 0.472 & 0.153 & 0.464 &  &  \\
+    0.271 & 0.659 & 0.249 & 0.445 &  &  \\
+    0.242 & 0.658 & 0.219 & 0.554 &  &  \\
+    0.276 & 0.479 & 0.068 & 0.278 &  &  \\
+    0.237 & 0.656 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.257 & 0.597 & 0.185 & 0.447 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.016 & 0.094 & 0.075 & 0.103 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+%----------------------- Blobworld -----------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores da avaliação de BGM para todos os \textit{ground-truths} comparados com os 
+resultados produzidos por Blobworld.}
+{\footnotesize \begin{tabular}{|r|r|r|r|r|r|}
+    \hline    
+    \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & \textbf{68077} & 
+\textbf{80099} \\    
+    \hline
+    0.319 & 0.345 & 0.338 & 0.321 & 0.357 & 0.283 \\
+    0.317 & 0.344 & 0.340 & 0.321 & 0.390 & 0.283 \\
+    0.320 & 0.346 & 0.339 & 0.298 & 0.370 & 0.283 \\
+    0.319 & 0.345 & 0.335 & 0.290 & 0.356 & 0.284 \\
+    0.317 & 0.345 & 0.375 & 0.310 & 0.348 & 0.284 \\
+     & 0.344 &  &  & 0.352 &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.319 & 0.345 & 0.345 & 0.308 & 0.362 & 0.283 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.001 & 0.001 & 0.017 & 0.014 & 0.016 & 0.001 \\
+    \hline
+    \hline
+     \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\    
+    \hline
+    0.320 & 0.634 & 0.461 & 0.401 & 0.370 & 0.439 \\
+    0.326 & 0.635 & 0.397 & 0.399 & 0.370 & 0.469 \\
+    0.318 & 0.634 & 0.466 & 0.407 & 0.371 & 0.399 \\
+    0.324 & 0.635 & 0.457 & 0.396 & 0.371 & 0.450 \\
+    0.322 & 0.636 & 0.384 & 0.396 & 0.400 & 0.428 \\
+    0.328 &  &  &  &  & 0.459 \\
+    0.321 &  &  &  &  & 0.427 \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} & 
+\textbf{Média} \\
+    \hline
+    0.323 & 0.635 & 0.433 & 0.400 & 0.376 & 0.439 \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. 
+Padrão} & \textbf{D. Padrão} \\
+    \hline
+    0.003 & 0.001 & 0.039 & 0.004 & 0.013 & 0.023 \\
+    \hline
+    \hline
+    \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\    
+    \hline
+    0.360 & 0.425 & 0.451 & 0.385 &  &  \\
+    0.355 & 0.302 & 0.455 & 0.463 &  &  \\
+    0.361 & 0.426 & 0.413 & 0.358 &  &  \\
+    0.344 & 0.427 & 0.461 & 0.325 &  &  \\
+    0.343 & 0.294 & 0.443 & 0.359 &  &  \\
+    0.364 & 0.426 &  &  &  &  \\
+     &  &  &  &  &  \\
+    \hline
+    \textbf{Média} & \textbf{Média} & \textbf{Média} & \textbf{Média} &  &  \\
+    \hline
+    0.354 & 0.383 & 0.444 & 0.378 &  &  \\
+    \hline
+    \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} & \textbf{D. Padrão} &  &  \\
+    \hline
+    0.009 & 0.066 & 0.019 & 0.052 &  &  \\
+    \hline
+\end{tabular}}
+\end{table}
+
+\clearpage
+
+%---------------------------------------------------%
+%---------------------------------------------------%
+
+\section{Artigo aceito pela publicação Pattern Recognition Letters}
+
+\includepdf[pages=-]{pdfs/prl.pdf}
+
+%---------------------------------------------------%
+%---------------------------------------------------%
+
+\section{Artigo submetido para a publicação Pattern Recognition}
+
+\includepdf[pages=-]{pdfs/pr.pdf}
+
+%---------------------------------------------------%
+%---------------------------------------------------%

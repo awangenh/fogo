@@ -1,0 +1,7 @@
+#Wed Jul 04 11:03:58 GMT-03:00 2007
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.config.gnu.cygwin.exe.debug.1606913443=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<environment append\="true">\r\n<variable delimiter\=";" name\="WXDIR" operation\="append" value\="C\:/wxWidgets-2.8.0"/>\r\n</environment>\r\n
+environment/project/cdt.managedbuild.config.gnu.cygwin.exe.release.1272707255=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<environment append\="true">\r\n<variable delimiter\=";" name\="WXDIR" operation\="append" value\="c\:/wxWidgets-2.8.0"/>\r\n</environment>\r\n
+indexer/indexerId=org.eclipse.cdt.core.nullindexer
+indexerId=org.eclipse.cdt.core.nullindexer
+instance/org.eclipse.core.net/org.eclipse.core.net.hasMigrated=true

@@ -1,0 +1,627 @@
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\chapter{Modelagem e Implementação}
+
+De modo a realizar a validação do algoritmo através de testes, foi implementado 
+um programa que utiliza o GNM para produzir segmentação sobre imagens digitais. 
+Os requisitos para essa implementação são:
+
+\begin{enumerate}
+\item A implementação do algoritmo deve ser portável entre diversas plataformas 
+e sistemas, de acordo com o que todos projetos atuais do grupo Cyclops e seus 
+laboratórios vêm desenvolvendo.
+\item A implementação deve suportar os tipos mais comuns de imagens digitais 
+usadas em processamento de imagens, nominalmente do tipo \textit{Portable Any 
+Map} (PNM). 
+    \begin{enumerate}
+    \item Esse suporte deve ser tanto para abertura quando para armazenamento 
+das imagens em arquivo.
+    \end{enumerate}
+    \begin{enumerate}
+    \item Deve ser feito com uso de alguma biblioteca selecionada. A 
+disponibilidade de diversas soluções para esse problema torna a 
+reimplementação de soluções desse tipo algo não desejado.
+    \end{enumerate}
+\item Deve ser possível configurar os diversos parâmetros envolvidos na 
+segmentação do GNM. 
+    \begin{enumerate}
+    \item Também devem ser possível configurar outros parâmetros ligados 
+diretamente a implementação, como tipos de arquivo de imagem usados no 
+momento de armazenamento em arquivo.
+    \end{enumerate}
+\item O código feito deve estar documentado e comentado para que seja facilitada 
+sua compreensão e uso por outros futuros colaboradores.
+    \begin{enumerate}
+    \item O modo de uso e as funcionalidades do programa de testes criado deve 
+ser também documentado.
+    \end{enumerate}
+\end{enumerate}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Cumprimento dos requisitos}
+
+\subsection{Portabilidade}
+
+Essa implementação desta versão para testes foi feita com o uso da linguagem de 
+programação C/C++ \cite{c++1998iso}. Não há nenhuma característica intrínseca do 
+algoritmo que 
+necessite diretamente ou seja beneficiada pelo uso dessa linguagem, mas C/C++ é 
+uma linguagem que, além de oferecer a desejada portabilidade, também oferece 
+compiladores capazes de gerarem programas de boa performance (obviamente, 
+somente se o programa em questão cumprir as condições para isso). Grande parte 
+dos projetos atuais do Cyclops também fazem uso dessa linguagem, facilitando uma 
+futura integração e uma maior base de conhecimento prévio da linguagem em 
+questão.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Suporte aos formatos de imagem desejados}
+
+Para conseguir o suporte aos formatos desejados fazendo uso da linguagem de 
+programação escolhida, neste caso o C/C++, foi utilizada a biblioteca de 
+ferramentas wxWidgets \cite{wxwidgets2007}. Além de oferecer a capacidade de 
+abrir e salvar os 
+formatos esperados, oferece suporte também para diversos outros tipos de imagem 
+que são interessantes para publicação ou armazenamento de arquivos de imagens, 
+como PNG e JPEG. O acesso a essas funcionalidades é simples e já existem outros 
+projetos no Cyclops que fazem uso dessa biblioteca, tornando ainda mais prático 
+seu uso.
+
+É importante ressaltar, porém, que o wxWidgets não oferece uma performance tão 
+boa quanto outras bibliotecas na questão de abertura e armazenamento de imagens 
+e, devido a isso, nos testes realizados o tempo destes processos não será 
+considerado.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Configuração de parâmetros}
+
+A configuração dos parâmetros de modo a atender as necessidades funcionais e 
+não-funcionais do GNM é feita da seguinte forma:
+
+\begin{itemize}
+\item Parâmetros como nome da imagem de entrada e nome da imagem de saída são 
+passados como parâmetros na linha de comando do programa implementado.
+\item Os parâmetros ligados diretamente ao algoritmo, como configuração das 
+percepções e limiares, é feito em um arquivo com formato definido e que terá seu 
+nome passado como parâmetro na linha de comando do programa implementado.
+\item Parâmetros não-funcionais adicionais, como seleção do formato de imagem 
+usado no armazenamento do arquivo de saída, são armazenados também em um arquivo 
+que será verificado automaticamente pelo programa sempre que executado.
+\end{itemize}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Documentação}
+
+Novamente seguindo o modelo do Cyclops e seus projetos recentes, todo o código 
+desenvolvido relacionado a implementação dessa versão de testes para o GNM foi 
+comentada seguindo o modelo Doxygen \cite{doxygen2007}. Este modelo oferece 
+formas específicas de 
+comentários, restringindo e definindo uma forma a ser seguida, facilitando uma 
+maior relação entre o modo de documentar entre diferentes desenvolvedores. Esse 
+modelo também permite a geração automática de diversos tipos de documentos, uma 
+funcionalidade bastante interessante.
+
+Quanto a forma de uso e funcionalidades dessa versão implementada, foi redigido 
+um pequeno manual com este intuito.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Implementação da versão de testes}
+
+A implementação realizada seguindo todos os requisitos mostrados é dividida 
+basicamente em quatro módulos:
+
+\begin{enumerate}
+\item \textit{libutils:} Uma biblioteca contendo classes e métodos auxiliares. 
+Especificamente, 
+conversão entre diferentes espaços de cores e funcionalidades relacionadas a 
+leitura de parâmetros em linhas de comando e arquivos.
+\item \textit{liblabeling:} Uma biblioteca contendo classes e métodos 
+relacionados ao processo de 
+\textit{labeling}. Responsável pela definição das classes relacionadas as 
+regioes atômicas e a representação de seus relacionamentos de vizinhança.
+\item \textit{libgnm:} Uma biblioteca contendo classes e métodos específicos do 
+Método de Rede de Gradientes. Define também a representação de estruturas como 
+meta-regiões. Adicionalmente realiza o pós-processamento mostrado anteriormente.
+\item \textit{gnmexe:} Um módulo responsável pela geração do programa de testes. 
+Utiliza-se de 
+todas as três bibliotecas citadas anteriormente para isso.
+\end{enumerate}
+
+Essa separação foi feita para que houvesse uma diferenciação clara entre as 
+funcionalidades de cada uma das partes do algoritmo e facilitando possíveis 
+extensões e modificações futuras. A seguir um detalhamento das características 
+mais relevantes de alguns desses módulos.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Detalhes sobre módulo liblabeling}
+
+A principal funcionalidade presente aqui é um método de rotulação de imagens que 
+identificará unicamente regiões de diferentes cores. Objetivando facilitar 
+passos posteriores do algoritmo do GNM esse método é capaz de estruturar o 
+resultado dessa rotulação como um grafo conexo não-direcionado. Esse módulo 
+define também as estruturas de dados usadas com esse intuito. Para essa 
+implementação, grafos foram modelados da seguinte forma:
+
+\begin{itemize}
+\item Vértices: definidos individualmente por uma \textit{struct}, devido a 
+natureza pública de seus atributos membros. Os atributos membros são um conjunto 
+sem duplicatas de posições na imagem rotulada, indicando todas posições contidas 
+nessa região, e outro conjunto sem duplicatas de ponteiros para outros vértices, 
+mostrando a vizinhança para este vértice. Ambos os conjuntos sem duplicatas são 
+implementados com o uso da estrutura de dados \textit{set}.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace Labeling
+{
+    struct Region
+    {
+    Region();
+    Region(const Region\& other_region);
+    ~Region();
+    
+    std::set<Index> positions;
+    std::set<Region*> neighbors;
+    };
+};
+\end{Verbatim}
+
+Um conjunto de vários vértices é definido um conjunto de ponteiros para objetos 
+Vértice, usando a estrutura de dados \textit{vector}.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace Labeling
+{
+  typedef std::vector<Labeling::Region*> Vertices;
+};
+\end{Verbatim}
+
+\item Arestas: são representadas individualmente através da definição de um par 
+de ponteiros para vértices, implementado na forma de um \textit{typedef} da 
+estrutura \textit{pair}.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace Labeling
+{
+  typedef std::pair<Region*,Region*> Edge;
+};
+\end{Verbatim}
+
+Um conjunto de várias arestas é definido como um conjunto sem duplicatas 
+(\textit{set}) de objetos Aresta.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace Labeling
+{
+  typedef std::set<Labeling::Edge> Edges;
+};
+\end{Verbatim}
+
+\end{itemize}
+
+Um grafo, associando um conjunto de vértices com outro conjunto de arestas, é 
+definido também através de um \textit{typedef} para uma estrutura \textit{pair}:
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace Labeling
+{
+  typedef std::pair<Vertices, Edges> Graph;
+};
+\end{Verbatim}
+
+Todas as estruturas de dados usadas são providas de modo padrão pela linguagem 
+C/C++.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Detalhes sobre módulo libgnm}
+
+Meta-regiões são estruturas de dados essenciais para o algoritmo do GNM. O 
+funcionamento destas é análogo ao de um grafo e a definição será bastante 
+semelhante a usado para definir grafos na seção anterior. Os vértices das 
+meta-regiões são definidas também com \textit{struct}, provendo de forma direta 
+acessa ao seus membros. Os membros de um objeto da classe meta-região são 1) um 
+conjunto de vértices de grafo, representando o agrupamento de regiões atômicas 
+pela qual as meta-regiões são responsáveis; 2) um atributo de identificação 
+única para cada meta-região 3) um arranjo de três posições usado para 
+armazenamento da soma dos valores RGB de cada uma das regiões contidas pela 
+meta-região; 4) um contador do total de posições somadas de todas regiões 
+contidas. Esses dois últimos atributos têm como utilidade otimizar acesso a 
+dados usados na geração da imagem de resultado do programa. 
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+struct Metaregion
+{
+    Metaregion(const Label l);
+    ~Metaregion();
+  
+    Labeling::Vertices regions;
+    unsigned int rgb_sum[3];
+    unsigned int pos_sum;
+    
+    Label label_id;  
+};
+\end{Verbatim}
+
+Não há manutenção de meta-regiões vizinhas devido ao elevado custo de ficar 
+atualizando e verificando esta propriedade durante a aplicação do algoritmo. As 
+muitas fusões entre meta-regiões fazem desta uma operação custosa e, que para a 
+atual implementação, não é necessária. Essa falta de necessidade se deve ao fato 
+de meta-regiões somente agruparem as regiões atômicas e o algoritmo atuar 
+somente sobre vizinhança entre regiões atômicas.
+
+Mostrada a definição usada para meta-regiões, agora será apresentado como o 
+algoritmo do GNM é implementado. Para o processo do algoritmo ser iniciado 
+apropriadamente certas informações devem ser passadas. Uma informação necessária 
+é a configuração de percepção. Essa configuração é fornecida através de uma 
+\textit{struct} que possui um arranjo em que cada uma das posições corresponde a 
+uma informação específica, representada por um valor flutuante em 
+\textit{double}, quanto a percepção. Os limiares desejados para avaliação também 
+são passados através dessa mesma estrutura.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+#define GNM_TOTAL_PARAMS 11
+enum GNMIndex { ALPHA_CP = 0,BETA_CP = 1,GAMMA_CP = 2, THRESHOLD_CP = 3,
+                ALPHA_RP = 4,BETA_RP = 5,GAMMA_RP = 6, THRESHOLD_RP = 7,   
+                ROUGH_SAT = 8,MIN_LUMINANCE = 9,MAX_LUMINANCE = 10 };
+
+namespace gnm{
+    struct Configuration{
+        double params[GNM_TOTAL_PARAMS];
+    };
+};
+\end{Verbatim}
+
+Além da passagem da configuração de percepção, espera-se como parâmetro de 
+entrada uma imagem rotulada na forma de um grafo e propriedades como as 
+dimensões da imagem, que serão usadas em diversos pontos da implementação do 
+algoritmo.
+
+Fornecidas todas as informações esperadas, o passo seguinte é a inicialização 
+das 
+meta-regiões. Condizendo com a descrição do algoritmo, cada região atômica 
+presente na rotulação da imagem de entrada vai se tornar uma meta-região, sendo 
+implementado de modo que haverá inicialmente um objeto da classe meta-região 
+contendo a região atômica correspondente no seu conjunto de regiões. Como este 
+passo necessita da varredura de cada uma das regiões atômicas, por questão de 
+otimização, serão realizadas outras operações a cada iteração: cada meta-região 
+terá seu valor já convertido para o espaço de cores HSL, sendo que cada tupla de 
+valores HSL será associada através de um \textit{map} chamado simplesmente de 
+\textit{hsl} a cada região atômica, e os atributos auxiliares de contagem de 
+posições e acumulo de valores RGB também são inicializados.
+
+Outra característica importante a citar nesse passo é que para cada região 
+atômica será feito um mapeamento em qual meta-região esta está contida, através 
+de uma estrutura do tipo \textit{map} que será referenciada como 
+\textit{meta\_track} ao longo do algoritmo. No momento de inicialização esse 
+mapeamento é quase redundante, mas o principal objetivo desta estrutura é 
+auxiliar adiante no momento em que as fusões entre meta-regiões ocorrerem e 
+houver a mudança de domínio sobre muitas regiões atômicas.
+
+Ainda no passo de inicialização outra estrutura será criada. Essa estrutura, 
+chamada \textit{post\_track}, tem como objetivo manter uma lista das 
+meta-regiões 
+que deverão, ao final do processo normal do algoritmo, passar pela avaliação 
+realizada pelo passo de pós-processamento descrito no capítulo de metodologia. O 
+\textit{post\_track} é um \textit{set} de ponteiros para meta-regiões. Os 
+ponteiros para meta-regiões serão inseridos nesse repositório sempre que, no 
+momento de criação de uma meta-região, se identificar que ela é pequena o 
+suficiente para ser pós-processada. Esse repositório será atualizada conforme 
+fusões de meta-regiões ocorrerem.
+
+Com as meta-regiões inicializadas, são preparadas as estruturas auxiliares que 
+serão usadas na varreduras das arestas do grafo. São usadas duas estruturas de 
+armazenamento do tipo \textit{set} para manter as arestas avaliadas como 
+suficientemente suaves e contínuas, de modo a mantê-las armazenadas de modo 
+ordenado. São duas as estruturas: \textit{clearSet}, para as arestas de 
+percepção clara, e \textit{roughSet}, para as arestas de percepção prejudicada. 
+Para a construção dessas estruturas, é realizada uma varredura sobre todas as 
+arestas do grafo.
+
+Em cada uma destas iterações, as regiões atômicas que são apontadas pelo par de 
+ponteiro presente na aresta sendo avaliada são checadas tem seus valores de cor 
+em HSL passados como parâmetro para a função \textit{LookForGradient}. Esse 
+método fará a avaliação de acordo com as equações mostradas na descrição do 
+algoritmo do GNM. Essa função retorna, respectivamente, o valor da diferença 
+perceptual entre essas regiões, o limiar da percepção apropriada e um booleano 
+indicando se a percepção é clara ou não. Essa avaliação é realizada uma única 
+vez para todas as arestas do grafo.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+  std::set<EvalEdge> clearSet;
+  std::set<EvalEdge> roughSet;
+  for (Labeling::Edges::iterator i=edges.begin(); i != edges.end(); i++){
+    Labeling::Edge current_edge = *i;
+    Labeling::Region *r1 = current_edge.first;
+    Labeling::Region *r2 = current_edge.second;    
+    
+    /*
+     * Check if the gradient between these two regions is acceptable.
+     */
+    std::pair< std::pair<double,double> , bool> tmp = 
+LookForGradient(hsi[r1],hsi[r2]);
+    std::pair<double,double> gradient = tmp.first;
+    if (gradient.first < gradient.second){
+    	EvalEdge ee;
+    	ee.first = current_edge;
+    	ee.second = gradient.first;
+    	
+    	(tmp.second) ? clearSet.insert(ee) : roughSet.insert(ee);
+    } //end if
+  } //end for
+\end{Verbatim}
+
+A avaliação positiva de uma aresta em termos de semelhança indica que essa 
+aresta deve ser inserida no \textit{set} correspondente a sua percepção. Então, 
+se positiva, é criado um objeto da classe \textit{EvalEdge}. Objetos dessa 
+classes são um par contendo, na ordem, a aresta que deve ser armazenada e o 
+valor da diferença perceptual proveniente da função de percepção. Esse valor de 
+diferença será usado para ordenar de modo crescente as arestas nesses 
+\textit{sets} auxiliares, devido ao fato de os operadores de menor igual e 
+igual, usados na ordenação de objetos por \textit{sets}, são sobrescritos para 
+realizarem a ordenação baseada nesse valor. Dado então um objeto da classe 
+\textit{EvalEdge} com as informações necessárias associadas, ele é inserido em 
+\textit{clearSet} ou \textit{roughSet}, dependente da percepção da avaliação.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+namespace gnm{
+    class EvalEdge : public std::pair<Labeling::Edge,double>{
+  	    public:
+    	  	bool operator==(const EvalEdge& ee) const {
+	  	    	return second == ee.second;
+	      	}
+	  	
+    	  	bool operator<(const EvalEdge& ee) const {
+	  	    	return second < ee.second;
+	      	}
+    };
+};
+\end{Verbatim}
+
+Após cada uma das arestas do grafo ter sido visitada e avaliada, o próximo passo 
+é realizar a varredura das arestas contidas nas estruturas auxiliares 
+\textit{clearSet} e \textit{roughSet}. O procedimento é totalmente análogo para 
+esses dois conjuntos. Essa varredura é um laço de repetição que 
+iterará uma única vez sobre cada uma das arestas destes \textit{sets}. Em cada 
+uma destas iterações, as regiões atômicas que são apontadas pelo par de ponteiro 
+presente na aresta atual são checadas se já não pertencem a uma mesma 
+meta-região. Essa verificação é realizada para evitar reavaliar 
+desnecessariamente uniões já presentes e, para que seja feita, se faz uso da 
+estrutura \textit{meta\_track} que indicará se tais regiões não estão mapeadas 
+para uma mesma meta-região. Se a verificação mostrar que existe uma confirmação 
+do mapeamento para uma mesma meta-região, o laço de repetição procede para a 
+seguinte iteração.
+
+Caso tais regiões atômicas não estejam contidas por uma mesma meta-região, o 
+resultado será a fusão entre as meta-regiões que contêm ambas as regiões 
+atômicas envolvidas na avaliação usando o método \textit{MergeMetaRegionsOf}.
+
+\begin{Verbatim}[fontsize=\small, numbers=left, frame=single]
+for (std::set<EvalEdge>::iterator i=clearSet.begin(); i != clearSet.end(); i++){
+    	Labeling::Edge current_edge = i->first;
+      Labeling::Region *r1 = current_edge.first;
+      Labeling::Region *r2 = current_edge.second;
+      
+      /*
+       * Regions are not already in the same meta-region
+       */
+      if (meta_track.find(meta_regions[r1]->label_id) != 
+          meta_track.find(meta_regions[r2]->label_id)){
+        /*
+         * If the gradient is acceptable, merge the meta-regions which contain 
+both regions.
+         */   	
+      	
+        MergeMetaRegionsOf(r1,r2,regions,meta_regions,meta_track);            
+      } //end if            
+    } //end for
+  
+  for (std::set<EvalEdge>::iterator i=roughSet.begin(); i != roughSet.end(); 
+i++){
+  	Labeling::Edge current_edge = i->first;
+    Labeling::Region *r1 = current_edge.first;
+    Labeling::Region *r2 = current_edge.second;
+    
+    /*
+     * Regions are not already in the same meta-region
+     */
+    if (meta_track.find(meta_regions[r1]->label_id) != 
+        meta_track.find(meta_regions[r2]->label_id)){
+      /*
+       * If the gradient is acceptable, merge the meta-regions which contain 
+both regions.
+       */   	
+    	
+      MergeMetaRegionsOf(r1,r2,regions,meta_regions,meta_track);
+    } //end if            
+  } //end for
+\end{Verbatim}
+
+A união entre meta-regiões realiza diversas operações. A essencial, obviamente, 
+é que a partir deste ponto as regiões atômicas envolvidas sejam contidas e 
+apontem a uma mesma meta-região. O resultado será que a partir deste momento a 
+região fundida conterá todas as posições de pixel destas regiões atômicas e de 
+todas outras regiões atômicas que já pertenciam as meta-regiões envolvidas. O 
+mapeamento realizado por \textit{meta\_track} será atualizado para manter 
+consistência, de forma que as regiões atômicas contidas nessa nova meta-região 
+apontem devidamente a esta. Os atributos auxiliares de acumulo de valores RGB e 
+contagem de posições também são atualizados, evitando posteriores varreduras 
+redundantes.
+
+O passo de fusão de meta-regiões realiza outra operação importante, que é a 
+atualização do \textit{post\_track}, repositório de regiões que devem ser 
+pós-processadas. As regiões que desaparecem devido à fusão, caso estejam 
+contidas no repositório, são retiradas. A região resultante, caso se torne maior 
+do que o necessário para ser avaliada no pós-processamento, também deve ser 
+eliminada do repositório.
+
+Concluída a iteração sobre todas as arestas do grafo e realizadas todas as 
+uniões perceptivamente aceitáveis, se faz necessário realizar a verificação do 
+pós-processamento sobre as meta-regiões que foram suficientemente pequenas para 
+serem adicionadas a \textit{post\_track}. Este 
+passo é bastante semelhante ao do algoritmo do GNM, com a exceção que vértices 
+serão percorridos em vez de arestas e as regras de fusão de regiões são próprias 
+ao estabelecido anterior em ao pós-processamento. Todas essas meta-regiões serão 
+avaliadas de acordo com o que é proposto pelo pós-processamento. Sempre 
+que houver o cumprimento da condição de união de regiões, os vértices envolvidos 
+serão unidos tal como na segmentação normal do GNM, através do uso do método 
+\textit{MergeMetaRegionsOf}.
+
+Por fim, resta a geração do resultado. O resultado do 
+algoritmo é fornecido através de um arranjo do mesmo tamanho que a imagem de 
+entrada onde as regiões encontradas durante a segmentação serão representadas 
+pelo valor RGB médio de cada uma das meta-regiões e suas regiões atômicas 
+contidas. Nesse ponto que se faz o uso da informação de acumulo de valores RGB e 
+contagem de posições para cada meta-região, evitando uma nova varredura e 
+gerando o valor médio através de uma simples divisão.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Detalhes sobre módulo gnmexe}
+
+O programa gerado não possui interface gráfica, considerado algo desnecessário 
+por ser somente um programa de testes. É um programa de console e todos 
+parâmetros referentes a ele serão passados diretamente através de linhas de 
+comando.
+
+Esse módulo gerencia a conversão dos dados adquiridos através de arquivos de 
+entrada e configuração para que estes possam ser passados como parâmetros para 
+os outros módulos. Também aqui que será feita a conversão do arranjo de valores 
+resultantes da segmentação do GNM para o arquivo de imagem digital do tipo 
+desejado pelo usuário.
+
+Por questões de avaliação de desempenho, esse módulo também rastreia o tempo 
+gasto especificamente pelo \textit{labeling} e pelo algoritmo do GNM.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Eficiência e outros requisitos não-funcionais}
+
+Algoritmos de segmentação de alta velocidade vêm sendo pesquisados para 
+satisfazer a demanda de aplicações que requerem resultados em tempo real ou 
+performances semelhantes. Processos de segmentação rápida podem ser usados em 
+várias situações como 
+orientação autônoma de veículo \cite{rehrmann1998fast}. Outra aplicação possível 
+é guiar cirurgias e outros procedimentos médicos. Um exemplo é dado em 
+\cite{kim2005Connectivity}, onde segmentar uma artéria carótida é um passo útil 
+para imagens médicas. Requerimentos de eficiência podem ser encontrados ainda em 
+diversas áreas. \cite{dewit2006fast} apresenta uma técnica desenvolvida para 
+aplicações de tempo real como análise de clima espacial. Em 
+\cite{figueroa2006background} uma abordagem é proposta para rastrear jogadores 
+em um campo de futebol. Outras aplicações podem ser encontradas na detecção de 
+defeitos em linhas de produção \cite{abouelela2005automated}. Abordagens de 
+segmentação rápida são um tópico recorrente e várias otimizações ou 
+especializações de técnicas conhecidas foram desenvolvidas 
+\cite{pan2006efficient}\cite{wong2006tracking}\cite{sun2005fast}.
+
+Enquanto diversos algoritmos obtêm bons resultados negligenciando velocidade, 
+GNM e CSC são ambas técnicas de segmentação genéricas que provêm uma boa 
+performance tanto em termos de qualidade de imagem quanto em termos de 
+velocidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{A complexidade do GNM}
+
+O GNM obtém um desempenho em termos de velocidade combinando uma série de 
+estratégias. Primeiro, um otimizado algoritmo de \textit{labeling} realiza o 
+processamento inicial da imagem pré-processada e garantindo uma solução rápida 
+para este passo intermediário. A complexidade do algoritmo de \textit{labeling} 
+usado é $O(n^2)$.
+
+Depois de classificar a informação, a construção do grafo é realizada. Este 
+passo vai estruturar a informação já que cada região encontrada pelo 
+\textit{labeling} corresponderá a um vértice do grafo. A geração de grafo tem 
+complexidade $O(n)$. Para aperfeiçoar o desempenho e evitar repetições 
+redundantes, os cálculos de valor de cor média para cada região e a conversão de 
+valores de RGB para HSL \cite{cheng2001color} são feitas ao longo da geração do 
+grafo.
+
+Em seguida à construção do grafo é construído, ele é percorrido para buscar 
+regiões similares de acordo com a percepção correspondente, verificando a 
+necessidade de uniões. Primeiro, todas as arestas são avaliadas e classificadas 
+se são semelhantes ou não. Se consideradas semelhantes, arestas devem ser 
+armazenadas de forma ordenada. A complexidade geral da ordenação usada é $O(\log 
+m)$. Então, o percorrimento de todas as arestas e ordenamento destas terá 
+complexidade esperada de $O(m \log m)$.
+
+As arestas aceitas e ordenadas são varridas novamente, agora para realizar as 
+fusões necessárias para produzir o resultado do algoritmo. A quantidade de 
+arestas pode variar tanto entre a aceitação de nenhuma quanto, no pior caso em 
+termos de complexidade, a aceitação de todas em relação a sua semelhança. Como 
+não é possível estimar sequer uma percentagem esperada ou geral encontrada pela 
+avaliação de semelhança do algoritmo, será considerado o pior caso para a 
+definição de complexidade desta parte, isto é, $O(m)$.
+
+A complexidade total do GNM é $O(n (1 + n) + m (1 + \log m))$, onde $n$ é o 
+número de vértices e $m$ é o número de arestas. Este método apresenta uma 
+solução simples que é somente dependente do tamanho da imagem e da complexidade 
+da cena da imagem resultante do pré-processamento por uma segmentação 
+selecionada. É importante notar, mesmo que não considerada diretamente na 
+complexidade do GNM, que o algoritmo selecionado para a pré-segmentação tem um 
+efeito cumulativo no tempo total de processamento. Assim, uma técnica apropriada 
+deve ser selecionada de forma a privilegiar a característica de desempenho.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{A complexidade do passo de pós-processamento}
+
+Diferente do processo do GNM, o pós-processamento varre diretamente as 
+meta-regiões, não as arestas do grafo. Essa varredura será feita para cada 
+meta-região considerada como necessária de reavaliação pelas condições do 
+pós-processamento. Para cada uma dessa meta-regiões selecionadas, todos as 
+meta-regiões vizinhas serão percorridas e verificadas em busca de unir as 
+regiões que produzam a menor interferência no resultado. A complexidade desse 
+passo então é $O(n^2)$, onde $n$ é o número de meta-regiões que necessitam de 
+pós-processamento. Como a classificação das meta-regiões que necessitam de 
+pós-processamento é feita ao longo do processo normal do algoritmo, a detecção 
+das meta-regiões que serão avaliadas neste passo não resulta em acréscimo de 
+complexidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Sobre os algoritmos usados como pré-segmentação}
+
+O foco da discussão nesta seção é obter bons resultados de imagem combinados a 
+performance em termos de velocidade, lembrando que a segmentação escolhida deve 
+obedecer a expectativa que o GNM tem de sua pré-segmentação, que é fazer um 
+reconhecimento grosseiro das regiões de similaridade mais óbvia sem comprometer 
+os gradientes de cores mais suaves. 
+
+Duas técnicas foram usadas nos testes realizados: Mumford\&Shah e \textit{Color 
+Structure Code}. Ambos os algoritmos apresentam uma filosofia de segmentação que 
+condiz com aquilo que o GNM espera. Porém, em termos de eficiência, o CSC se 
+destaca em relação ao M\&S.
+
+Apesar do CSC ser uma técnica focada em velocidade e ter sido desenvolvida com 
+propósitos específicos, ainda obtém bons resultados em termos de qualidade de 
+imagem e prova ser uma boa solução em casos genéricos também. A abordagem de 
+ilhas de similaridade ajusta-se bem com a propriedade esperada do ponto de 
+partida do GNM, que regiões de similaridade alta sejam encontradas evitando 
+vazamentos. O algoritmo do Mumford\&Shah não apresenta preocupações específicas 
+com desempenho e necessita de diversas iterações e reinicializações de valores. 
+Outra característica desfavorável é que a implementação de técnicas baseadas em 
+Mumford\&Shah devem discretizar ou realizar o cálculo numérico da equação 
+diferencial que é a função de avaliação de segmentação de regiões, uma tarefa 
+custosa. Essas características colocam o CSC em vantagem, pelo menos quanto ao 
+aspecto de velocidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%

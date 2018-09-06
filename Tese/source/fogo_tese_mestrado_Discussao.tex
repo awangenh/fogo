@@ -1,0 +1,38 @@
+\chapter{Discussão}
+
+Simplicidade foi uma das metas buscadas quando este método foi concebido. 
+Abordagens similares foram realizadas anteriormente por 
+\cite{tremeau2000regions} e \cite{wu1993optimal}, onde o problema era definido 
+com uma otimização do fluxo de grafos em sub-grafos. Outra abordagem de 
+particionamento de grafos introduz uma medida global obtida através de uma 
+análise do principal componente de um conjunto de diferentes parâmetros 
+associadas com cada elemento da imagem \cite{dupuis2006image}. Nossa abordagem 
+também busca sub-grafos na rede original mas é muito mais simples e age 
+somente localmente em cada aresta, sem tentar encontrar um valor ótimo para todo 
+o sub-grafo que representa uma região e sem usar qualquer informação global da 
+imagem ou função de custo. São aplicadas somente simples medidas de similaridade 
+não-adaptativas e produzem resultados de qualidade em imagens de razoável 
+dificuldade, comparável a abordagens mais complexas. O método é baseia-se em que 
+padrões locais de variação de características da imagem são tão importantes 
+quanto as características estáticas. Para descobrir ordem nestes padrões é 
+essencial a um algoritmo de segmentação. O processo de descobrir os padrões de 
+variação da imagem é descrito como um processo de local baseado em similaridade 
+por um simples e consistente \textit{framework}.
+
+A abordagem do GNM pode ser vista como um procedimento de \textit{labeling}. O 
+objetivo de técnicas como essa é rotular unicamente todos objetos em uma imagem. 
+Geralmente é um processo aplicado depois do uso de algum outro método de 
+pré-processamento de imagens, muitas vezes uma segmentação. Porém, o resultado 
+de uma segmentação de crescimento por regiões se comporta como um método de 
+\textit{labeling}, delegando pixels para regiões e associando valores de cor 
+média com eles. Deste ponto de vista, o pré-processamento em que nossa abordagem 
+se baseia é uma pré-segmentação com um método que destaca os óbvios pedaços de 
+regiões onde um análise de padrão de gradientes não é necessária, assim evitando 
+processamento desnecessário.
+
+A principal diferença entre este método e outros métodos de \textit{labeling} de 
+pós-processamento de imagens desenvolvidos para buscar melhores resultados sobre 
+segmentações é que o método aqui apresentado não é baseado em conhecimento ou em 
+qualquer modelo ou domínio, isto é, não necessita de conhecimento adicional 
+sobre o conteúdo ou o domínio de aplicação das imagens, dependendo somente de 
+informação presente na imagem.

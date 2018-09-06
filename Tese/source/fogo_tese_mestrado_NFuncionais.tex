@@ -1,0 +1,119 @@
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\chapter{Eficiência e Requisitos Não-Funcionais}
+
+Algoritmos de segmentação de alta velocidade vêm sendo pesquisados para 
+satisfazer a demanda de aplicações que requerem resultados em tempo real ou 
+performances semelhantes. Processos de segmentação rápida podem ser usados em 
+várias situações como 
+orientação autônoma de veículo \cite{rehrmann1998fast}. Outra aplicação possível 
+é guiar cirurgias e outros procedimentos médicos. Um exemplo é dado em 
+\cite{kim2005Connectivity}, onde segmentar uma artéria carótida é um passo útil 
+para imagens médicas. Requerimentos de eficiência podem ser encontrados ainda em 
+diversas áreas. \cite{dewit2006fast} apresenta uma técnica desenvolvida para 
+aplicações de tempo real como análise de clima espacial. Em 
+\cite{figueroa2006background} uma abordagem é proposta para rastrear jogadores 
+em um campo de futebol. Outras aplicações podem ser encontradas na detecção de 
+defeitos em linhas de produção \cite{abouelela2005automated}. Abordagens de 
+segmentação rápida são um tópico recorrente e várias otimizações ou 
+especializações de técnicas conhecidas foram desenvolvidas 
+\cite{pan2006efficient}\cite{wong2006tracking}\cite{sun2005fast}.
+
+Enquanto diversos algoritmos obtêm bons resultados negligenciando velocidade, 
+GNM e CSC são ambas técnicas de segmentação genéricas que provêm uma boa 
+performance tanto em termos de qualidade de imagem quanto em termos de 
+velocidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{A complexidade do GNM}
+
+O GNM obtém um desempenho em termos de velocidade combinando uma série de 
+estratégias. Primeiro, um otimizado algoritmo de \textit{labeling} realiza o 
+processamento inicial da imagem pré-processada e garantindo uma solução rápida 
+para este passo intermediário. A complexidade do algoritmo de \textit{labeling} 
+usado é $O(n^2)$.
+
+Depois de classificar a informação, a construção do grafo é realizada. Este 
+passo vai estruturar a informação já que cada região encontrada pelo 
+\textit{labeling} corresponderá a um vértice do grafo. A geração de grafo tem 
+complexidade $O(n)$. Para aperfeiçoar o desempenho e evitar repetições 
+redundantes, os cálculos de valor de cor média para cada região e a conversão de 
+valores de RGB para HSL \cite{cheng2001color} são feitas ao longo da geração do 
+grafo.
+
+Em seguida à construção do grafo é construído, ele é percorrido para buscar 
+regiões similares de acordo com a percepção correspondente, verificando a 
+necessidade de uniões. Primeiro, todas as arestas são avaliadas e classificadas 
+se são semelhantes ou não. Se consideradas semelhantes, arestas devem ser 
+armazenadas de forma ordenada. A complexidade geral da ordenação usada é $O(\log 
+m)$. Então, o percorrimento de todas as arestas e ordenamento destas terá 
+complexidade esperada de $O(m \log m)$.
+
+As arestas aceitas e ordenadas são varridas novamente, agora para realizar as 
+fusões necessárias para produzir o resultado do algoritmo. A quantidade de 
+arestas pode variar tanto entre a aceitação de nenhuma quanto, no pior caso em 
+termos de complexidade, a aceitação de todas em relação a sua semelhança. Como 
+não é possível estimar sequer uma percentagem esperada ou geral encontrada pela 
+avaliação de semelhança do algoritmo, será considerado o pior caso para a 
+definição de complexidade desta parte, isto é, $O(m)$.
+
+A complexidade total do GNM é $O(n (1 + n) + m (1 + \log m))$, onde $n$ é o 
+número de vértices e $m$ é o número de arestas. Este método apresenta uma 
+solução simples que é somente dependente do tamanho da imagem e da complexidade 
+da cena da imagem resultante do pré-processamento por uma segmentação 
+selecionada. É importante notar, mesmo que não considerada diretamente na 
+complexidade do GNM, que oalgoritmo selecionado para a pré-segmentação tem um 
+efeito cumulativo no tempototal de processamento. Assim, uma técnica apropriada 
+deve ser selecionada de forma a privilegiar a característica de desempenho.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{A complexidade do passo de pós-processamento}
+
+Diferente do processo do GNM, o pós-processamento varre diretamente as 
+meta-regiões, não as arestas do grafo. Essa varredura será feita para cada 
+meta-região considerada como necessária de reavaliação pelas condições do 
+pós-processamento. Para cada uma dessa meta-regiões selecionadas, todos as 
+meta-regiões vizinhas serão percorridas e verificadas em busca de unir as 
+regiões que produzam a menor interferência no resultado. A complexidade desse 
+passo então é $O(n^2)$, onde $n$ é o número de meta-regiões que necessitam de 
+pós-processamento. Como a classificação das meta-regiões que necessitam de 
+pós-processamento é feita ao longo do processo normal do algoritmo, a detecção 
+das meta-regiões que serão avaliadas neste passo não resulta em acréscimo de 
+complexidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Sobre os algoritmos usados como pré-segmentação}
+
+O foco da discussão nesta seção é obter bons resultados de imagem combinados a 
+performance em termos de velocidade, lembrando que a segmentação escolhida deve 
+obedecer a expectativa que o GNM tem de sua pré-segmentação, que é fazer um 
+reconhecimento grosseiro das regiões de similaridade mais óbvia sem comprometer 
+os gradientes de cores mais suaves. 
+
+Duas técnicas foram usadas nos testes realizados: Mumford\&Shah e \textit{Color 
+Structure Code}. Ambos os algoritmos apresentam uma filosofia de segmentação que 
+condiz com aquilo que o GNM espera. Porém, em termos de eficiência, o CSC se 
+destaca em relação ao M\&S.
+
+Apesar do CSC ser uma técnica focada em velocidade e ter sido desenvolvida com 
+propósitos específicos, ainda obtém bons resultados em termos de qualidade de 
+imagem e prova ser uma boa solução em casos genéricos também. A abordagem de 
+ilhas de similaridade ajusta-se bem com a propriedade esperada do ponto de 
+partida do GNM, que regiões de similaridade alta sejam encontradas evitando 
+vazamentos. O algoritmo do Mumford\&Shah não apresenta preocupações específicas 
+com desempenho e necessita de diversas iterações e reinicializações de valores. 
+Outra característica desfavorável é que a implementação de técnicas baseadas em 
+Mumford\&Shah devem discretizar ou realizar o cálculo numérico da equação 
+diferencial que é a função de avaliação de segmentação de regiões, uma tarefa 
+custosa. Essas características colocam o CSC em vantagem, pelo menos quanto ao 
+aspecto de velocidade.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%

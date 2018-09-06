@@ -1,0 +1,96 @@
+LAPIX - Laboratory for Image Processing and Graphic Computing
+Cyclops Project
+Federal University of Santa Catarina - Brazil
+
+	GNM - Gradient Network Method Segmentation
+
+	For more information about the GNM algorithm, refer to http://www.lapix.ufsc.br/gnm or http://dx.doi.org/10.1016/j.patrec.2007.05.009.
+
+	SECTIONS:
+	---------
+	
+	1) GNM EXECUTABLE	
+	2) GNM SETTINGS
+	3) CONFIGURATION FILE
+	4) CONTACT
+
+	1) GNM EXECUTABLE
+	
+	Usage: gnm [-nd] -i <image_file> -s <image_file> -o <image_file> [-b <image_file>] [-c <cfg_file>] [--help] [--version]
+
+	GNM - Gradient Network Method Segmentation
+  	-i, --input=<image_file>  input image filename, preferrably a previously segmented one (PPM or BMP or JPEG)
+	-s, --source=<image_file> original image filename, the image used for the initial segmentation (PPM or BMP or JPEG)
+	-o, --output=<image_file> output image filename (format specified in the gnm.settings file, if not save as PPM)
+	-b, --border=<image_file> image only showing the segmentated regions borders
+	-c, --config=<cfg_file>   configuration filename (refer to README file to learn about configuration)
+	-n                        disable the post-processing step
+	-d                        dump segments statistics and labeled segments files
+  	--help                    print this help and exit
+	--version                 print version information and exit
+
+	Observation: wxWidgets (www.wxwidgets.org) is used to read and write image files.	
+	
+  
+  2) GNM SETTINGS
+  
+  Along the GNM executable, it is expected a 'gnm.settings' file. That file allows to set some options not directly related to the segmentation.
+  
+  The options currently available:
+  
+  * Selecting output file type: In the following line after 'OUTPUT_TYPE[1=PPM;2=PNG;3=BMP]' specify any of those numbers to select the desired type.
+    DEFAULT: 1=PPM
+    
+  * Selecting the minimum region size threshold for the fragment-cleaning post processing step.
+		DEFAULT: 10
+	
+	* Selecting the maximum region size threshold for the fragment-cleaning post processing step.	
+		DEFAULT: 50
+	
+	* Selecting the color difference threshold for the fragment-cleaning post processing step.
+		DEFAULT: 0.5
+  
+  In the case of 'gnm.settings' is non existent all default options will be loaded.
+  
+	3) CONFIGURATION FILE
+	
+	This file will set the alpha, beta and gamma values used in the perception function. Also defines the threshold separating clear and rough perception.
+	
+	The correct order of the parameters in the configuration file is:
+	
+	ALPHA - CLEAR PERCEPTION
+	BETA - CLEAR PERCEPTION
+	GAMMA - CLEAR PERCEPTION
+	ALPHA - ROUGH PERCEPTION
+	BETA - ROUGH PERCEPTION
+	GAMMA - ROUGH PERCEPTION
+	THRESHOLD - CLEAR PERCEPTION
+	THRESHOLD - ROUGH PERCEPTION
+	ROUGH SATURATION THRESHOLD
+	MINIMUM LUMINANCE THRESHOLD
+	MAXIMUM LUMINANCE THRESHOLD
+	
+	All these parameters are float values normalized to [0,1] range. Also the sum of alpha, beta and gamma values of a perception must equal to 1.0.
+	
+	If no configuration file is used, the following values are used by default:
+	
+	0.7 
+	0.2
+	0.1
+	0.02
+	0.0
+	0.2
+	0.8
+	0.08
+	0.1
+	0.2
+	0.95
+	
+	4) CONTACT
+	
+	For further help or interest, contact:
+	
+	Rafael Floriani Bertoldi
+	fogo@cyclops.ufsc.br
+  
+  

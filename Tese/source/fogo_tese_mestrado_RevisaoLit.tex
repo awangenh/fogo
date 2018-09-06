@@ -1,0 +1,341 @@
+\chapter{Estado da arte}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Segmentação de imagens}
+
+As primeiras pesquisas em segmentação de imagens focaram-se em imagens em tons 
+de cinza devido a exigência computacional imposta por algoritmos de 
+processamento digital de imagens e a dificuldade de obter recursos computacionais 
+suficientes pra lidar com problemas mais complexos. Bons resultados foram atingidos 
+\cite{vincent1991watersheds}, mas com a evolução tecnológica aliada a 
+necessidade de métodos capazes de tratar imagens coloridas, algoritmos 
+preparados para processar problemas de maior dimensionalidade foram 
+desenvolvidos. Todavia, tal como no caso de imagens de tons de cinza, uma 
+solução de fato ainda não foi encontrada. O problema de segmentação de imagens 
+coloridas pode ser considerado como um super-conjunto ou uma abordagem de maior 
+dimensionalidade da segmentação em tons de cinza. Na verdade, uma considerável 
+quantidade de algoritmos para imagens coloridas são simplesmente extensões de 
+métodos para tons de cinza. A complexidade maior da maior dimensionalidade das 
+imagens coloridas torna ainda mais difícil a busca por uma solução, 
+especialmente porque algoritmos para imagens coloridas têm que lidar 
+simultaneamente com várias características, como cromacidade e luminosidade. A 
+presença simultânea dessas diferentes características dificulta extensões diretas 
+de métodos em tons de cinza para imagens coloridas. O modo como os algoritmos lidam 
+com esta relação entre as características de cor é essencial para a qualidade dos 
+resultados das técnicas para imagens coloridas.
+
+As primeiras tentativas de resolver o problema de segmentação de imagens 
+coloridas tentaram aperfeiçoar técnicas usadas em algoritmos para tons de cinza, 
+tais como, por exemplo, limiarização de histograma, clusterização, detecção de 
+bordas, crescimento de regiões, técnicas \textit{fuzzy} e redes neurais. Em vez de usar 
+somente o gradiente da escala de cinza, eles usam todos os canais que 
+representam a cor, geralmente representados por três eixos. Boas revisões sobre 
+técnicas podem ser encontradas em \cite{skarbek1994colour} \cite{pal1993review} 
+\cite{lucchese2001color} \cite{cheng2001color}. A insatisfação com os resultados 
+iniciais, especialmente em relação ao uso do espaço de cores RGB, levou a 
+pesquisa de técnicas em diferentes espaços de cores. \cite{gauch1992comparison} 
+apresenta uma comparação entre três diferentes algoritmos em quatro espaços de 
+cores. Algoritmos de segmentação tenderam cada vez mais a usar espaços de cores 
+mais perceptivamente próximos àquele observado pelo ser humano. Espaços de cores 
+diferenciando cromacidade e características de iluminação de diversas formas se 
+tornaram populares. Exemplos são HSL, HSV, CIE l*a*b e CIE l*u*v. Uma avaliação 
+interessante desses espaços de cores e alguns outros podem ser vistas em 
+\cite{cheng2001color}. Em \cite{gevers1999color} um estudo sobre características
+encontradas em diversos espaços de cores, como tonalidade e luminosidade, são 
+classificados de acordo com a propriedades como invariância da direção de visão ou 
+iluminação e controle sobre condições como ofuscamentos. \cite{angulo2007modelling} 
+também faz uma avaliação interessante quanto a espaços de cores perceptivos, inclusive 
+propondo também uma técnica de segmentação baseada no espaço de cores L1 de forma a 
+produzir uma segmentação robusta combinando fatores de cromacidade e iluminação.
+
+Abordagens baseadas em modelos físicos tornaram-se 
+interessantes com a popularização de imagens coloridas, devido ao acréscimo de 
+informações disponíveis. A modelagem e representação de fenômenos físicos 
+necessitam, porém, de um detalhamento elevado, prejudicando a generalização 
+dessas técnicas. Vale salientar que técnicas baseadas em modelos físicos, mesmo 
+que restritivas, são bastante eficientes em relação a problemas como ofuscamento 
+e sombreamento para o conjunto de imagens a que se propõem trabalhar. Um exemplo 
+tradicional é \cite{klinker1990physical}, onde uma técnica de segmentação 
+baseada no modelo dicromático de reflexão é apresentada. Outros trabalhos 
+seguiram e tentaram aperfeiçoar o uso desse modelo como \cite{tsang1996edge} e 
+outros modelos também foram apresentados \cite{healey1992segmenting}. A 
+dificuldade de se encontrar um modelo físico para descrever segmentação de 
+imagens pode também ser associado ao fato que ``o problema de segmentação de 
+imagens está basicamente na percepção psicológica, e dessa forma não é 
+susceptível a uma análise puramente analítica'' \cite{fu1981survey}, restando a 
+questão se algum dia será possível atingir ``imitações'' de sistemas biológicos 
+de visão.
+
+Uma das primeiras abordagens e bastante interessante para imagens coloridas foi o 
+algoritmo de \textit{watershed} \cite{vincent1991watersheds}. É uma técnica que foi 
+desenvolvida a partir de técnicas anteriores usadas em imagens em tons de cinza. 
+Classifica pixels em regiões levando em consideração descidas de gradiente de modo a
+preencher as bordas encontradas na imagem segmentada. Essa abordagem quando aplicada a
+imagens com objetos formados por longos e suaves gradientes, porém, encontra problemas
+pela definição pouco clara das fronteiras entre as regiões da imagem. Isso pode resultar 
+em segmentações que, dependendo da agressividade aplicada, resultam na identificação de 
+objetos não existentes ou a fusão errônea de objetos.
+
+Uma abordagem de destaque para segmentação de imagens coloridas é o 
+\textit{Color Structure Code} (CSC) \cite{priese1993fast} 
+\cite{rehrmann1998fast}. É uma técnica de crescimento de regiões que usa uma 
+topologia hierárquica formada por ilha (Figura \ref{csc_island}), topologia essa introduzida por 
+\cite{hartmann1987recognition}. Estas ilhas têm diferentes níveis. Por exemplo, 
+uma ilha de nível $0$ é um hexágono, composto pelos seis vértices mais o ponto 
+central. Durante o processo, algumas ilhas sobrepõem outras de forma que ilhas 
+de nível $n+1$ são compostas pela composição de sete ilhas de nível $n$ 
+sobrepostas. Este procedimento é repetido até que uma ilha cubra a imagem 
+inteira.
+
+O primeiro passo, então, é a divisão particionada de uma imagem em ilhas de 
+nível $0$. Um passo de fusão seguirá onde as ilhas cresceram e serão sobrepostas 
+iterativamente. Em seguida, ocorre um passo de divisão, onde correções serão 
+feitas através do uso de informação global da imagem. Assim, CSC combina passos 
+iniciais baseados em informação local seguido por uma avaliação baseada em 
+informação global, buscando segmentar regiões com o maior grau de similaridade 
+possível.
+
+Em relação a imagens ao ar livre, CSC é uma boa alternativa para o tratamento 
+deste tipo de imagem. Porém, como a abordagem não tem enfoque algum em observar 
+variações extensas porém lentas de cores em um mesmo objeto, problemas de 
+segmentação podem ocorrer. As conseqüências, como na maioria dos algoritmos, são 
+a fusão desnecessária de regiões com gradientes mais sensíveis ou parâmetros 
+cautelosos produzem a divisão de um mesmo objeto em vários segmentos.
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.6]{imgs/csc/csc_island.png}
+\caption{Estrutura de ilhas hierárquicas do \textit{Color Structure Code} 
+\cite{priese2003introduction}}
+\label{csc_island}
+\end{figure}
+
+A mais tradicional abordagem em termos de segmentação em termos de 
+detecção de homogeneidade por ilhas de similaridade é a técnica baseada na 
+funcional proposta por Mumford e Shah \cite{mumford1989optimal}. Quanto menor 
+for a energia obtida nesta funcional, melhor é a segmentação, lidando com o 
+problema de segmentação na elegante forma da redução de energia global. Tal 
+funcional de energia é mostrada na equação \ref{ms}.
+
+\begin{equation}
+E(f,\Gamma) = \int_{\Omega}\abs{ f - g }^2dxdy + \mu\int_{\Omega \backslash 
+\Gamma}\abs{ \nabla f }^2dxdy + \nu\abs{\Gamma}
+\label{ms}
+\end{equation}
+onde $f(x,y)$ é uma função diferenciável em $\cup \Omega_{i}$ e é permitido que $f(x,y)$
+seja discontínua em $\Gamma$. $\Gamma$ é a união das fronteiras dentro do domínio planar $\Omega$ e 
+$\nu\abs{\Gamma}$ representa o tamanho total dos arcos contidos em $\Gamma$. A minimização de $E$ 
+implica no aperfeiçoamento da segmentação de $g(x,y)$.
+
+A equação tem como três principais objetivos forçar a aproximação entre $f$ e 
+$g$, não permitindo uma grande variação de $f$ para cada região e forçando as 
+fronteiras entre as regiões para serem reduzidas o quanto for possível. O 
+resultado da equação equivalerá a imagem segmentada em regiões bem definidas e 
+semelhantes.
+
+A dificuldade da utilização da equação \ref{ms} em segmentação de imagens reside 
+no desconhecimento da função $f$ e da possibilidade de existência de mínimos 
+locais na funcional.
+
+Uma versão simplificada da equação, proposta pelos próprios autores, é mostrada 
+na equação \ref{mssimples}. A existência e regularidade dos minimizadores foram provadas 
+teoricamente pelos autores.
+
+\begin{equation}
+E(f,\Gamma) = \sum_i\int_{\Omega_i}(g - c_i)^2dxdy + \nu\abs{\Gamma}
+\label{mssimples}
+\end{equation}
+
+A abordagem da funcional de Mumford\&Shah resulta em uma segmentação que tende 
+formar regiões de homogeneidade em relação até um certo limite de 
+``elasticidade'' de similaridade. Essa é uma abordagem bastante interessante e, 
+da forma como é realizada pela funcional, poderosa, mas para alguns tipos de 
+cenas essa solução não é ideal. Imagens que apresentem objetos formados por 
+vários tons variando ao longo da imagem costumam apresentar dificuldade para ser 
+corretamente identificados, pois para um correta segmentação necessitam de uma 
+extrapolação de parâmetros que acaba vazando para regiões mais sensíveis. 
+Parâmetros cautelosos causam a separação errada de um único objeto em várias 
+regiões.
+
+Uma abordagem mais recente de destaque na formação de ilhas de semelhança como segmentação
+é realizada através de uma técnica de reconhecimento de padrões chamada de deslocamento-médio
+(\textit{mean-shift}). \cite{comaniciu2002mean} usaram essa abordagem para a criação de um
+método adaptativo de ascendência de gradientes, buscando regiões que convirjam para um máximo local
+na função de densidade criada a partir da imagem a ser segmentada. A capacidade de identificação de 
+tendências semelhantes na variação de cores torna os resultados obtidos robustos em relação a 
+textura e também a objetos formados por uma longa e lenta variação de cores.
+
+Segmentações conhecidas como contornos ativos \cite{xu1998snakes} 
+\cite{caselles1997geodesic} \cite{weickert2001applications} 
+\cite{chan2002multiphase}, baseadas em level sets ou \textit{snakes}, fornecem 
+uma estruturação semelhante a provida por um \textit{framework} para 
+segmentações em geral semi-automáticas, atingindo vários resultados 
+interessantes. Contornos ativos permitem a combinação de um modelo que define 
+contração e expansão em busca da identificação de uma região de acordo com a 
+funcional de avaliação especificada. É reconhecido que técnicas desse tipo, em 
+geral, são extremamente independentes da inicialização. Também necessitam de 
+aperfeiçoamentos, extensões para que segmentam uma imagem em mais que dois 
+objetos.
+
+Outro ramo da segmentação de imagens coloridas bastante pesquisado é a questão 
+da segmentação robusta na presença de imagens fortemente texturizadas. Exemplos 
+de abordagem são técnicas usando campos aleatórios de Markov 
+\cite{kato2006markov} e utilizando conjuntos de pistas para obter tal propósito 
+\cite{dupuis2006image}. Em geral, estes algoritmos atuam bem na detecção de 
+objetos texturizados, mas ainda apresentam problemas com a questão de detectar 
+objetos formados por longas e contínuas variações de cores. Outro exemplo 
+interessante de técnicas robustas a textura é o JSEG 
+\cite{deng2001unsupervised}. 
+
+O JSEG age em dois passos principais: uma quantização de cores que produz uma 
+classificação da imagem, seguida de uma avaliação realizando um crescimento de 
+regiões. A quantização de cores fará com que os valores de cor sejam 
+substituídos por classes. A boa organização espacial dessas classes é avaliada 
+através da determinação de um chamado valor $J$, valor esse que remete 
+diretamente ao nome da técnica (Figura \ref{jseg_values}). Quanto menor o valor de $J$ mais provável 
+é que 
+um conjunto de classes corresponda a uma região homogênea na cena da imagem. O 
+crescimento de regiões será realizado de forma a unir regiões em termos de 
+semelhança de cor, usando o espaço de cores CIE l*u*v, que reduzam o valor de 
+$J$, indicando uma boa segmentação. Esse processo é repetido iterativamente em 
+várias escalas até o melhor resultado esperado ou possível for encontrado.
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=0.4]{imgs/jseg/jvalues.png}
+\caption{Mapa de classes e seus valores de $J$ correspondentes 
+\cite{deng2001unsupervised}. Observado, especialmente, o mapa de classes no 
+centro pode se ver por que o JSEG é robusto a presença de texturas.}
+\label{jseg_values}
+\end{figure}
+
+A avaliação espacial realizada no cálculo dos valores $J$ torna o JSEG uma 
+técnica robusta a objetos texturizados. Porém, essa avaliação não é suficiente 
+para tornar esta uma técnica robusta a presença de fatores de iluminação e 
+sombreamento. O reconhecimento dessa limitação é feito pelos próprios autores, 
+avaliando a dificuldade da identificação de objetos formados por várias faixas 
+de cores semelhantes e da ambigüidade de como proceder para identificar tais 
+regiões sem fazer avaliações equivocadas. 
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Métodos de avaliação da qualidade de segmentação de imagens}
+
+Sabendo que técnicas de segmentação de imagens buscam particionar cenas em regiões
+correlacionadas de alguma maneira, a qualidade de uma segmentação pode ser classificada
+quão correlacionadas as partições criadas são em relação aos objetos realmente presentes 
+na cena da imagem.
+
+A questão de acessar diretamente o nível dessa qualidade do resultado em segmentação de imagens, 
+porém, não é trivial. O problema essencial é a definição clara do que caracteriza uma 
+segmentação como melhor que outra. Por exemplo, diferentes observadores podem dar 
+diferentes graus de qualidade para uma mesma segmentação, vendo diferentes objetos ou um mesmo 
+objeto de diferentes formas em uma mesma cena. 
+
+Outro problema é que a simples superposição dos objetos segmentados e dos objetos esperados não é 
+uma solução viável. A dificuldade nesse caso provém de como e quanto se deve penalizar regiões super 
+ou sub-segmentadas ou pequenos vazamentos que as regiões segmentadas possam apresentar, 
+especialmente porque o resultado de segmentações dificilmente será completamente preciso em relação 
+as posições de pixels.
+
+A análise matemática das segmentações também é inviável em geral devido a complexidade dos métodos 
+usados no particionamento das imagens. Assim, avaliações genéricas usando esse tipo de abordagem são 
+desconsideradas.
+
+Uma última questão que deve ser levada ainda em consideração é que além de permitir avaliar o 
+resultado da própria segmentação, espera-se que o resultado avaliado seja compatível e fácil de ser 
+comparado com avaliações geradas a partir de outras segmentações, mesmo que estas usem paradigmas 
+diferentes.
+
+A motivação de criar medidas para simplificar a comparação de segmentações resultantes
+de diferentes algoritmos levou a criação de várias medidas de avaliação, apesar de o número destas 
+medidas ser proporcionalmente muito menor que o número de diferentes técnicas e formas de 
+segmentações disponíveis. Uma razão provável para esse fato é que muitos autores 
+não utilizam com freqüência medidas de avaliação na validação do resultados de suas técnicas, 
+geralmente ainda encontrando muitos trabalhos que usam avaliações empíricas e visuais para esse fim.
+
+Uma forma de avaliação de segmentação de imagens é a avaliação experimental. Essa forma de avaliação 
+pode ser separada em dois grupos:
+
+\begin{itemize}
+\item \textbf{Baseada em características}: a avaliação realiza-se verificando a diferença entre a 
+segmentação e um conjunto de propriedades desejáveis.
+\item \textbf{Baseada em tarefa}: considerando que a segmentação de imagens é um passo usado para 
+atingir uma meta de maior nível, a segmentação é avaliada pela verificação da influência desta no 
+sistema em questão.
+\end{itemize}
+
+Avaliações baseada em tarefa são específicas em relação a aplicação, enquanto as baseadas em 
+características são mais versáteis. Em geral, as avaliações baseadas em características fazem uso de 
+imagens de \textit{ground truth} para realizar a verificação da qualidade. Essas imagens são imagens 
+onde os objetos na cena são marcados por observadores humanos. Duas características que implicam 
+diretamente desse tipo de avaliação são a fácil correlação da avaliação obtida com o resultado 
+esperado pelo observador e fornece ainda uma forma simples de comparar algoritmos de segmentação 
+quaisquer, pois qualquer seja o algoritmo a avaliação é feita em relação a um mesmo alvo e o 
+resultado desta pode facilmente ser comparado. Exemplos dessas avaliações podem ser vistos em 
+\cite{jiang2006distance}, com destaque ao Rand, uma medida tradicional para esse tipo de 
+comparação, e a correspondência por grafos bipartidos (\textit{Bipartite Graph Matching - BGM}), que 
+utiliza uma abordagem distinta a do Rand.
+
+O índice Rand \cite{rand1971objective} é uma medida de similaridade criada para avaliação da 
+qualidade de algoritmos que produzam resultados na forma de \textit{clusters}. Para esse fim, 
+realiza a comparação com outros resultados ou com um padrão-ouro, como, por exemplo, um 
+\textit{ground truth}. A comparação entre os 2 conjuntos de \textit{clusters} 
+$C_1=\{c_{11},c_{12},...,c_{1N}\}$ e $C_2=\{c_{21},c_{22},...,c_{2M}\}$ sobre uma mesma imagem 
+$P=\{p_1,p_2,...,p_K\}$ onde cada elemento de $C_1$ ou $C_2$ é um subconjunto de $P$ e 
+$c_{1j}=\{p_{1j},p_{2j},...,p_{lj}\}$, calculam-se as seguintes quantidades:
+
+\begin{itemize}
+\item \textbf{$N_{11}$}: o número de pixels no mesmo \textit{cluster} em ambos $C_1$ e $C_2$.
+\item \textbf{$N_{00}$}: o número de pixels em diferentes \textit{clusters} em ambos $C_1$ e $C_2$.
+\end{itemize}
+
+O índice Rand é, então, definido pela equação \ref{randeq}, sabendo que $n$ é a cardinalidade do 
+conjunto $P$:
+
+\begin{equation}
+R(C_1,C_2)=1 - \frac{N_{11}+N_{00}} {\frac{n(n-1)}{2}}
+\label{randeq}
+\end{equation}
+
+O índice BGM \cite{jiang2006distance} verifica a correlação de um-para-um entre os clusters enquanto 
+simultaneamente tenta maximizar esta relação. O BGM considera cada \textit{cluster} de $C_1$ e $C_2$ 
+como vértices de um grafo bipartido. As arestas são adicionadas entre cada vértice e então recebem o 
+valor $|c_{1i} \cap c_{2j}|$, um valor que pode ser adquirido diretamente da matriz de 
+correspondência. Então, o grafo bipartido de peso máximo é definido com um subgrafo $\{ 
+(c_{1i1},c_{2j1}), ... , (c_{1ir},c_{2jr})\}$, onde estarão presente somente as arestas de $c_{1i}$ 
+até $c_{2j}$ com máximo peso. Após todas essas arestas serem encontradas, o valor do índice BGM 
+\ref{bgmeq} será calculado dividindo a soma do peso das arestas restantes $w$ pela cardinalidade $n$ 
+do conjunto $P$.
+
+\begin{equation}
+BGM(C_1,C_2)=1 - \frac{w}{n}
+\label{bgmeq}
+\end{equation}
+
+Os dois índices apresentados, Rand e BGM, avaliam a qualidade de uma imagem em 
+relação a um único alvo, em uma relação de um-para-um. Uma medida de avaliação derivada do Rand foi 
+desenvolvida de modo a permitir a comparação direta de uma imagem com um ou mais \textit{ground 
+truths}, uma qualidade bastante desejável, pois a comparação com um único alvo pode ser muito 
+limitada dependendo da aplicação. Essa medida de avaliação, chamada Rand Probabilístico Normalizado 
+(\textit{Normalized Probabilistic Rand - NPR}) \cite{unnikrishnan2007toward}, cria um teto máximo 
+para a qualidade da avaliação de acordo com o nível de acordância entre os diferentes \textit{ground 
+truths}, fornecendo uma avaliação que automaticamente oferece uma forma de lidar com a possível 
+ambigüidade entre esses diferentes alvos.
+
+Existem ainda formas de avaliação baseadas em características experimentais não baseadas em 
+\textit{ground truths}. Um exemplo é \cite{fernandezgarcia2008automatic}, onde a avaliação da 
+qualidade do resultado de segmentações é verificada de acordo com um definido nível de consenso 
+entre o resultado de diversos algoritmos. O nível de consenso é usado na comparação entre os 
+resultados de um definido grupo de segmentações e, de acordo com este, define-se um \textit{ground 
+truth} automaticamente, refletindo a coerência entre os resultados dos diversos algoritmos. Esse 
+alvo gerado automaticamente pode, então, ser usado para realizar a comparação com outras imagens 
+segmentadas. Esse tipo de medida oferece a propriedade de não sofrer da ambigüidade da avaliação 
+humana na definição de \textit{ground truths}, mas ao mesmo tempo terá sua qualidade dependente 
+diretamente da qualidade geral dos algoritmos utilizados na geração das imagens alvo.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%

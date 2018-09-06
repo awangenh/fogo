@@ -1,0 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%Daniel Duarte Abdala
+%
+%
+%16.08.07
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+path = 'H:\IMAGES\BSDS300-images\BSDS300\images\test\';
+path2 =  'H:\IMAGES\BSDS300-images\BSDS300\images\train\'
+files = dir(path2);
+
+for cont = 1 : size(files)
+  if (files(cont).isdir ~= 1)
+    name = files(cont).name;
+    inImg   = [path2, name];
+    
+    name = name(1:(length(name)-4 ));
+    name = [name '.csc.30.png']
+    outImg  = [path2, name];
+    command = ['csc_new.exe -i ', inImg, ' -o ', outImg, ' -t 30'];
+    system(command);
+    
+  end;
+  
+end;

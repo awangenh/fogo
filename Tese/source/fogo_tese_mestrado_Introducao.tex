@@ -1,0 +1,100 @@
+\chapter{Introdução}
+
+Algoritmos de segmentação de imagens coloridas são um campo de aplicação muito 
+importante em análise de imagens e visão computacional. Seu principal 
+objetivo é identificar regiões homogêneas ou regiões de características 
+similares em uma imagem de acordo com um aspecto predefinido, especialmente em 
+relação a seus valores de cor. Esta família de algoritmos 
+torna-se muito importante quando se busca atingir um resultado que alguém possa 
+comparar diretamente com o obtido pela visão humana. Um problema essencial de 
+algoritmos atuais é que a identificação de similaridade é calculada sobre a 
+continuidade simples de similaridade entre pixels. Esta abordagem leva a erros 
+quando se considera, por exemplo, o céu azul num dia sem nuvens. Nessas 
+condições, geralmente o céu apresenta um azul de intensidade mais escura nas 
+partes mais altas da imagem e gradualmente e continuamente decrescem para um 
+azul de intensidade mais clara nas partes inferiores. Esta variação de 
+intensidade poderá ser identificada como numerosas regiões em muitos dos 
+algoritmos atuais, enquanto o olho humano vê somente uma região, o céu 
+especificamente, reconhecendo a ordem na variação. O conceito de uma segmentação 
+de imagens baseada na análise das relações de gradientes contínuos busca 
+transpor esta dificuldade. A abordagem que será apresentada se chama Método de 
+Rede de Gradientes (\textit{Gradient Network Method - GNM}).
+
+\section{Motivação}
+
+Algoritmos tradicionais de segmentação por crescimento de regiões, de modo a 
+produzir o melhor resultado possível de uma imagem se baseiam em uma busca por 
+ilhas de alta entropia em uma imagem, ou seja, regiões homogêneas onde nenhuma 
+ou pouca mudança ocorrem. O algoritmo de segmentação Mumford \& Shah 
+\cite{mumford1989optimal} é o melhor exemplo desta metodologia. O mais comum 
+algoritmo de \textit{Watershed} \cite{vincent1991watersheds} e suas 
+implementações mais elaboradas \cite{mittelhaeusser1995fast}, mesmo se elas 
+usassem gradientes de imagens para definir fronteiras de regiões, não são muito 
+diferentes. Isto leva a uma situação onde imagens que mostram uma clara ordem, 
+mas onde esta ordem é representada pela mudança de padrões de cores ou 
+intensidade de luz, tem resultados de segmentação fracos, veja Figura 
+\ref{lake}.
+
+\begin{figure}[here]
+\centering
+\subfigure[Imagem original]
+{
+	\label{lake:a}
+	\includegraphics[scale=0.45]{imgs/sample_lake/lake_original.png}
+}
+\subfigure[Imagem resultante do uso da segmentação Mumford \& Shah provida por 
+\cite{megawave2006}]
+{
+	\label{lake:b}
+	\includegraphics[scale=0.45]{imgs/sample_lake/lake_pre_ms.png}
+}
+\subfigure[Resultado do Método de Rede de Gradientes para a mesma imagem]
+{
+	\label{lake:c}
+	\includegraphics[scale=0.45]{imgs/sample_lake/lake_gnm.png}
+}
+\caption{Uma imagem bem-organizada onde a ordem é dada por gradientes 
+estruturados mais do que por mudanças abruptas, mais duas diferentes 
+segmentações dessa mesma imagem.}
+\label{lake}
+\end{figure}
+
+Por outro lado, quando nós humanos observamos uma cena com o céu azul, onde os 
+tons de azul mudam gradualmente a partir do horizonte, a ordem é óbvia e nós nem 
+mesmo tentamos interpretar o céu como uma série de regiões de diferentes 
+``azuis''. Nós reconhecemos a ordem na dinâmica das cores e identificamos o céu 
+como uma simples estrutura na imagem. Isto ocorre também com imagens similares 
+onde nós não temos conhecimento adicional, tais como formas curvas coloridas que 
+nunca foram vistas anteriormente, onde uma iluminação irregular produz 
+diferentes formas de cor e intensidade de luz. Mas algoritmos tradicionais de 
+segmentação não são capazes de realizar esta operação simples e independente de 
+conhecimento prévio. A cena da Figura \ref{lake:b} ilustra isso, segmentada com 
+a implementação do algoritmo Mumford \& Shah para espaço de cores encontrada no 
+mais recente pacote de ferramentas de processamento de imagens \textit{Megawave} 
+\cite{megawave2006}, onde o resultado mostra o lago com mais segmentos do que o 
+esperado. Se nós modificarmos os parâmetros de modo radical para que o céu ou 
+lago sejam segmentados como um único objeto, isto produzirá vazamentos em outras 
+partes da imagem. Porém, se a mudança gradual de padrões da imagem for levada em 
+conta, pode se obter um resultado de segmentação tal como mostrado na Figura 
+\ref{lake:c}. Muitas abordagens foram desenvolvidas nos últimos 15 anos para 
+melhorar a performance da tradicional segmentação por crescimento de regiões em 
+cenas naturais, indo desde simples abordagens hierárquicas 
+\cite{priese1993fast}\cite{rehrmann1998fast} até algumas mais elaboradas 
+\cite{dupuis2006image}. Métodos mais recentes focam não somente na identificação 
+de regiões de cores bastante similares, mas também objetos formados por texturas 
+\cite{deng2001unsupervised}\cite{dupuis2006image}\cite{kato2006markov}. Mas 
+mesmo com o uso de técnicas capazes de identificar objetos de cor similar e 
+mesmo texturizados, há ainda outra característica que atrapalha algoritmos de 
+segmentação de imagens: luminosidade e a existência de extensas mas lentas e 
+graduais variações de cor para um mesmo objeto em uma imagem, resultando em 
+grandes gradientes de baixa variação local. Algumas abordagens têm buscado 
+resolver o problema usando diferentes métodos de avaliação de cromacidade e 
+luminosidade \cite{dony1999edge}\cite{schneider2000multiscale}, mas as soluções 
+propostas não são totalmente robustas. 
+
+Aqui é proposta uma nova técnica pós-segmentação para processar imagens pré-segmentadas através da 
+análise de redes de gradientes que descrevem padrões de variação de cores entre segmentos, 
+um método especialmente robusto quando aplicado para objetos de grande e 
+contínua variação de cor em uma imagem, tal como ocorre como imagens ao ar 
+livre.
+

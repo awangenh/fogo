@@ -1,0 +1,41 @@
+\chapter{Conclusão}
+
+Foi mostrado empiricamente e através de medidas de avaliação reconhecidas que a qualidade das 
+segmentações geradas por esta abordagem de dois passos é promissora e comparável a métodos do estado 
+da arte da área de segmentação de imagens. O algoritmo de segmentação aqui apresentado é um método 
+de segmentação de pós-processamento que é independente do método aplicado para gerar a imagem de 
+entrada super-segmentada, como mostrado pelas comparações entre os resultados produzidos por quatro 
+diferentes métodos de segmentação de imagens contra a combinação destes com o GNM.
+
+É importante notar ainda que qualquer medida de avaliação que busca definir o ``melhor'' resultado 
+possível em uma área complexa, como a segmentação de imagens, deve ter seus valores de avaliação 
+considerados com cuidado. Estas medidas não provêm uma forma definitiva de determinar qual é a 
+melhor segmentação, mas fornecem um interessante e objetivo recurso. Com essas medidas é possível 
+avaliar diferentes segmentações sob os diferentes contextos e propriedades que a abordagem que as 
+medidas de avaliação utilizam. Ambas as medidas de avaliação aqui selecionadas, Rand e BGM, por 
+exemplo, aplicam abordagens bastante distintas para determinar aquilo que consideram como uma melhor 
+segmentação e, tal como é difícil definir quão correta uma segmentação é, é difícil argumentar qual 
+prova ser mais correta. Estas medidas provêm, afinal, formas de encontrar se, sob as condições 
+esperadas pela abordagem destas, uma segmentação é capaz de agir em um desejado nível de qualidade. 
+Observando os resultados apresentados em seções anteriores, é possível ver que o GNM, sob as 
+propriedades e condições de ambas as técnicas selecionadas, pode obter segmentações com um nível de 
+qualidade no mínimo similar a várias técnicas reconhecidas. Os resultados obtidos com GNM ainda 
+apresentam bons resultados em termos de velocidade quando comparado com outras técnicas. 
+
+O modo de atuação como um segundo passo ou um passo seqüencial sobre outras técnicas pode parecer 
+diferir do convencional mas esta escolha tem somente o efeito que a segmentação 
+grosseira inicial será benéfica ao GNM para passos futuros contanto que poucos 
+vazamentos ocorram nessa identificação dos objetos. Como o GNM atualmente está 
+voltado a busca de propriedades mais específicas a combinação de propriedades 
+oferecidas por outras técnicas somente faz o algoritmo apresentado atingir 
+melhores resultados.
+
+O algoritmo do GNM, apesar de ter mostrado que sua abordagem é válida, ainda pode receber 
+aperfeiçoamentos. Como futuros trabalhos existem: fortalecer o componente estrutural para 
+reconhecimento dos gradientes longos e contínuos, utilizando mais conhecimento sobre as informações 
+topológicas conhecidas; tornar a função de avaliação menos rígida, especialmente em relação a 
+utilização de limiares; e aperfeiçoar ainda mais a capacidade perceptiva da função de similaridade 
+do algoritmo, para tornar o algoritmo ainda mais robusto em relação a efeitos como ofuscamento e 
+sombreamento. Um aperfeiçoamento possível em termos da implementação é a utilização da tecnologia de 
+processadores gráficos de uso geral (\textit{GP-GPU}), de modo a tornar a sua execução muito mais 
+veloz.

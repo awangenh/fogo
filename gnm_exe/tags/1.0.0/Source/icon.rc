@@ -1,0 +1,3 @@
+#ifdef _WIN32 || __WIN32__
+  aaacyclops ICON aaacyclops.ico
+#endif

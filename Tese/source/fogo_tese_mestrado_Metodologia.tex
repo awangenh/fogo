@@ -1,0 +1,598 @@
+\chapter{Metodologia}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Princípio geral}
+
+A meta principal da abordagem por redes de gradientes é descrever a dinâmica da 
+mudança de cores e fazer uso dessa informação em um algoritmo de segmentação, 
+tentando reconhecer uma ordem superior de organização em uma imagem, 
+especificamente a organização das mudanças ou a estrutura das tendências em uma 
+imagem. A idéia geral para alcançar tal objetivo é usar um grafo que representa 
+a natureza das modificações entre regiões da imagem na forma de uma função de 
+custo variável para diferentes intervalos. Este grafo é então processado através 
+de um algoritmo que funde regiões que apresentem uma mesma dinâmica dentro da 
+imagem, isto é, que estejam dentro de uma tendência aceitável, tal como uma 
+longa todavia contínua variação de subida ou descida. O algoritmo foi 
+desenvolvido para ser capaz de representar as diferenças cromáticas entre 
+regiões como custos e para reconhecer ordem mesmo na presença de mudança de 
+padrões dentro de uma imagem, unindo regiões que pertencem a uma mesma 
+``estrutura ordenada'' do grafo. O método proposto é um \textit{framework} 
+geral, e alguns de seus componentes citados a seguir podem ser mudados através 
+de outras técnicas.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Análise de requisitos}
+
+De forma a tentar atingir a meta descrita na seção anterior, foram definidos um 
+conjunto de requisitos envolvendo o algoritmo. A seguir, estes requisitos e como 
+foram abordados:
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Representação inicial da imagem} 
+
+Representar cada simples pixel como um 
+nodo em um grafo com um conjunto de parâmetros é uma solução custosa e pode 
+introduzir ruídos locais que não contribuem para a estimação regional da 
+tendência da variação de cores. Assim será feito o uso de uma segmentação por 
+regiões como um passo de pré-processamento, que irá representar cada região que 
+é estatisticamente bastante semelhante, ou seja, homogênea como um simples 
+objeto dentro um conjunto determinado de parâmetros. Este conjunto de parâmetros 
+será dependente do domínio e do método de pré-segmentação e será discutido 
+adiante. Cara objeto gerado por esta pré-segmentação será considerado uma região 
+atômica. Esta segmentação deve ser realizada com parâmetros parcimônicos que 
+resultem em uma imagem super-segmentada e com o menor número possível de 
+vazamentos, idealmente, nenhum. Espera-se que as regiões atômicas sejam 
+similares a ponto que o valor de cor médio destas seja uma representação válida 
+da cor do grupo de pixels agrupados.
+
+Os testes realizados e que serão apresentados em seções adiantes foram 
+realizados com duas técnicas: a funcional de Mumford \& Shah (M\&S) functional 
+\cite{mumford1989optimal} e o método chamado \textit{Color Structure Code} (CSC) 
+\cite{priese1993fast}. Ambas as técnicas são técnicas focadas em forte 
+similaridade regional na identificação de objetos homogêneos, M\&S através da 
+representação de elasticidade através da funcional e CSC através da abordagem de 
+ilhas de similaridade (Figura \ref{carro_csc_ms}). Esse enfoque é ideal para o que se espera da 
+pré-segmentação e os resultados apresentados por ambas validam a escolha, como 
+será mostrado adiante. Nada impede, porém, que técnicas como, por exemplo, 
+\textit{watershed} \cite{vincent1991watersheds} pudessem ser usadas, afinal o 
+objetivo deste passo não é obter uma segmentação final, mas uma 
+pré-classificação de pixels como estruturas homogêneas. 
+
+Para a validação, buscou-se produzir um conjunto de parâmetros para o M\&S e CSC 
+que não produzissem ou evitassem ao máximo vazamentos, de forma a usar esses 
+parâmetros ao longo dos experimentos.
+
+\begin{figure}[here]
+\centering
+\subfigure[Pré-segmentação com Mumford \& Shah]
+{
+	\label{carro_csc_ms:a}
+	\includegraphics[scale=0.25]{imgs/carro/PICT0021_pre_ms600.png}
+}
+\subfigure[Pré-segmentação com Color Structure Code]
+{
+	\label{carro_csc_ms:b}
+	\includegraphics[scale=0.25]{imgs/carro/PICT0021_pre_csc30.png}
+}
+\caption{Imagem comparando a pré-segmentação de uma mesma imagem entre as 
+técnicas Mumford \& Shah e Color Structure Code. A segmentação fornecida por 
+M\&S em geral tende a ser menos agressiva e conservando mais gradientes suaves, 
+dando um aspecto mais ``escamoso'' a imagem. CSC produz resultados menos 
+conservadores, mas bons o suficiente para serem usados como passo inicial, 
+especialmente levando em consideração a velocidade desta técnica.}
+\label{carro_csc_ms}
+\end{figure}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Estruturação dos dados} 
+
+É necessária uma estrutura que permita que, dada uma imagem que siga a 
+representação inicial esperada, consiga representar claramente as regiões 
+atômicas de similaridade identificadas e também as relações de vizinhança 
+presentes entre essas regiões. A representação de vizinhanças é necessária para 
+passos posteriores do algoritmo, onde gradientes entre diferentes regiões 
+atômicas acordantes com as métricas do algoritmo proposto serão buscados.
+
+Essa definição de nodos conexos e com representação do relacionamento de 
+vizinhança levou a seleção de grafos como a estrutura para o método. Com grafos, 
+permite-se representar a topologia da imagem inicial através de vértices 
+que representarão as regiões atômicas de similaridade e de arestas 
+não-direcionadas que mostrarão as vizinhanças presentes entre tais vértices, como mostrado na figura 
+\ref{grafo}. O uso de grafos como forma de estruturação de dados auxiliando técnicas de 
+segmentação também pode ser visto em \cite{tremeau2000regions}.
+
+\begin{figure}[here]
+\centering
+\subfigure[Imagem pré-segmentada]
+{
+	\label{grafo:a}
+	\includegraphics[scale=1.5]{imgs/grafo/imagem_labeling.jpg}
+}
+\subfigure[Grafo representando a rotulação de regiões.]
+{
+	\label{grafo:b}
+	\includegraphics[scale=1.5]{imgs/grafo/imagem_grafo.png}
+}
+\caption{Uma amostra de como fica a organização das imagens após serem rotuladas 
+e estruturadas como grafos conexos pelo algoritmo GNM.}
+\label{grafo}
+\end{figure}
+
+Grafos admitem um topologia natural, onde cada aresta $\{v_i,v_j\}$ do grafo $G$ é identificada com 
+um valor no intervalo unitário $I=[0,1]$ e unidos em vértices coincidentes, isto é, duas arestas 
+$\{v_1,v_2\}$ e $\{v_2,v_3\}$ unidas por um nodo $v_2$ são consideradas equivalentes por uma aresta 
+simples $\{v_1,v_3\}$.
+
+A noção de grafos conexos também apresenta uma propriedade adicional muito desejada, que é a 
+correlação direta com conectividade topológica. Essa propriedade garante que um espaço topológico 
+conexo não possui pares de subconjuntos $U$ e $V$ não-vazios, tal que ambos $U$ e $V$ são conjuntos 
+abertos pertencentes a $X$ e $U \cap V = \emptyset$ e $U \cup V = X$. Também pode ser definido como 
+um espaço que quaisquer dois pontos podem ser unidos por um caminho. Um caminho é definido pela 
+existência de uma função contínua $f$ do intervalo unitário $[0,1]$ para $X$ com $f(0)=x$ e 
+$f(1)=y$.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Medida de similaridade} 
+
+A medida de similaridade deverá cumprir os seguintes objetivos:
+
+\begin{enumerate}
+\item Regiões vizinhas que obedecem uma variação de cores contínua e aceitável devem sempre ser 
+consideradas homogêneas e unidas eventualmente em uma única região;
+\item Regiões vizinhas separadas por bordas muito salientes, isto é, quebras notáveis de 
+continuidade entre cores, jamais devem ser unidas diretamente;
+\item Todas as regiões do grafo conexo devem ter sua vizinhança verificada para 
+possíveis uniões uma única vez;
+\item Regiões que não possuam vizinhança direta podem ser unidas se houver um 
+caminho entre estas regiões que venha a ser considerado homogêneo de acordo com os objetivos 
+anteriores.
+\end{enumerate}
+
+O que é considerado como homogêneo será definido por um limiar. Em princípio, a 
+medida de similaridade compara duas regiões atômicas consideradas homogêneas, 
+medindo quão próximas as regiões estão com respeito ao grau de homogeneidade. 
+Estas regiões são representadas em um grafo e um papel da medida de similaridade 
+é prover um custo para cada aresta conectando regiões adjacentes. Como no caso 
+da segmentação inicial, o cálculo da medida de similaridade é uma parte do 
+\textit{framework} onde muitas medidas de similaridade diferentes poderiam ser 
+usadas. Nos experimentos descritos adiante, a classificação do nível de similaridade de regiões é 
+realizado através de percepção clara e prejudicada na cena de uma imagem, como discutido por 
+\cite{huang2006natural}, melhorando a robustez da medida de similaridade de cores para luzes 
+especulares e sombras. A idéia é melhorar a robustez na presença de fortes variações de 
+luminosidade, algo comum com imagens do mundo real.
+
+Para conseguir melhor representar estas características de percepção, os valores 
+de cor no algoritmo serão convertidos para o espaço de cores HSL (Figura \ref{hsl_cone}). De modo 
+geral, as imagens digitais são armazenadas usando o espaço de cores RGB, porém, este 
+espaço não é interessante para uma abordagem perceptual. As principais razões 
+para isso são:
+
+\begin{itemize}
+\item Os eixos R, G e B são fortemente correlacionados e não apresentam de forma 
+direta propriedades como cor predominante ou luminosidade. A extração de 
+propriedades como essas é possível, mas não é natural desta representação.
+\item Apesar de ser uma modelagem que remete diretamente a forma como o olho 
+humano faz a identificação de cores, é muito mais simples realizar uma avaliação 
+semântica ou perceptual de cores através de sistemas como HSL, onde propriedades 
+mais diretamente relacionadas a nossa percepção consciente, e não inconsciente, 
+de cores são usadas.
+\end{itemize}
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=1]{imgs/hsl/hsl_hue_cone.png}
+\caption{Visão geral do espaço de cores HSL. A relação entre seus eixos faz este 
+espaço de cores tomar a forma de um duplo cone.}
+\label{hsl_cone}
+\end{figure}
+
+O espaço de cores HSL, especificamente, representa diretamente três 
+características que simplificam a avaliação perceptual da cor. Os eixos que 
+compõem este espaço representam a matiz ou cor predominante (\textit{hue}), 
+saturação de iluminação (\textit{saturation}) e a própria iluminação 
+(\textit{luminance}). Esta separação de propriedades permite uma avaliação mais 
+específica sobre certas características diante de condições onde serão 
+consideradas mais relevantes certas características sobre outras. Essa 
+relevância das diferentes propriedades se dá da seguinte forma:
+
+\begin{enumerate}
+\item Variações no canal de tom devem ser sensíveis numa verificação de 
+gradientes tênues, pois a cor predominante em uma região deve sempre possuir uma 
+semelhança elevada.
+\item Saturação determina a importância maior dada ou ao canal de tom ou ao 
+canal de luminosidade para a avaliação. De forma geral, em condições de baixa 
+saturação o tom da cor começa a perder importância na representação da própria 
+cor. No algoritmo proposto, será considerado que a partir de certo ponto de 
+determinada baixa saturação o tom de uma cor será irrelevante e a luminosidade 
+ganhará importância na avaliação. Acima deste ponto de saturação, o tom de uma 
+cor será considerado muito mais importante, dando uma pequena importância 
+somente a luminosidade.
+\item A luminosidade pode variar bastante de forma elevada entre regiões 
+semelhantes vizinhas, contanto que ainda seja possível uma observar um tom 
+predominantemente semelhante estas regiões ou uma variação gradual aceitável de 
+luminosidade.
+\item Sobre a luminosidade vale ressaltar que esta também afetará a 
+importância dada ao tom na avaliação perceptiva. Em condições de luminosidade 
+muito baixa ou muito alta o tom também será considerado irrelevante. Isso busca 
+representar condições com excesso ou falta de iluminação onde as cores não terão 
+muita relação aos tons presentes no disco de matiz do HSL e serão basicamente 
+diferentes variações de cor bastante próximas do branco ou preto, 
+respectivamente.
+\end{enumerate}
+
+Deve se observar que para representar essa diferente relevância entre 
+propriedades no RGB seria muito mais difícil. Por exemplo, na questão de matiz 
+de cor, uma avaliação como essas fica prejudicada pela quantidade de informações 
+não interessantes diretamente correlacionadas. O critério de avaliação seria o 
+mesmo, mas a forma de se avaliar sobre este sistema seria muito mais complexo 
+tendo que levar em conta que outras propriedades sempre estarão presentes mesmo 
+quando não desejadas.
+
+O HSL não é o único espaço de cores que forneça características perceptuais de 
+uma forma mais simples. Outros modelos como HSV, CIE L*a*b e CIE L*u*v 
+podem ser usados nesse tipo de avaliação, oferecendo diferentes propriedades e 
+vantagens. O HSL foi escolhido neste trabalho devido a uma representação direta 
+e usual das propriedades desejadas e necessárias, além de ser um espaço de cores 
+usados também já por diversos outros autores. A escolha foi feita mesmo 
+sabendo-se da questão da relação não-linear do HSL com o RGB, da questão da 
+representação cíclica do tom de cores ou de não ser possível aplicar distâncias 
+euclidianas diretamente na diferenciação de valores como em um espaço como o CIE 
+L*a*b, pois estas características não afetam ou são contornadas com a 
+abordagem realizada. Diversas discussões sobre seleção de espaço de cores já 
+foram realizadas e aqui referencia-se especialmente para \cite{cheng2001color}.
+
+\begin{figure}[here]
+\centering
+\includegraphics[scale=1]{imgs/hsl/hsl_hue_sphere.png}
+\caption{Outra forma de visualizar o espaço de cores HSL. À esquerda pode ser 
+observada a natureza cíclica das matizes de cores e como a variação de saturação 
+as afetam. À direita a influência da variação de luminosidade e saturação. 
+(Imagem criada por Mike Horvath sob a licença Creative Commons.) }
+\label{hsl_sphere}
+\end{figure}
+
+Com o uso do espaço de cores HSL e seguindo as restrições de avaliação 
+apresentadas acima, a medida de similaridade proposta busca-se então apresentar 
+uma maior correlação com a forma como analisamos uma imagem e também se tornar 
+mais robusta a presença de fatores como variação de luminosidade e sombras nas 
+imagens.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Descrição do Método de Rede de Gradientes - GNM}
+
+\begin{enumerate}
+%1.
+\item Uma imagem pré-segmentada é usada como entrada. É produzida com parâmetros 
+conservativos e bastante sensíveis para evitar que um segmento nesta imagem vaze 
+de um objeto sobre o outro na imagem, evitando possíveis problemas com ruído local induzido por alta 
+granularidade. Esses \textit{clusters} de semelhança na equação \ref{clusterseq} são representados 
+como conjuntos de coordenadas no espaço $\Omega$ de valores $\mathbb{R}^n$ e faixas de cor dentro do 
+espaço $\mathbb{R}^m$, onde $m$ é determinado pela dimensionalidade do espaço de cores escolhido.
+
+\begin{equation}
+C = \{(x_1,r_1),...,(x_i,r_j) | x_1,...,x_i \in \Omega \land \Omega \subseteq \mathbb{R}^n \land 
+r_1,...,r_j \in \mathbb{R}^m  \} 
+\label{clusterseq}
+\end{equation}
+
+Cada \textit{cluster} $C= \{c_1,...,c_n\}$ é um conjunto discreto em que cada pixel da imagem de 
+entrada é inequivocamente contido em único e específico \textit{cluster}, tal que $\bigcap_{i=1}^{n} 
+c_i = \emptyset$ e $\bigcup_{i=1}^{n} c_i = \Omega$.
+
+Junto com a imagem de entrada, dois limiares são passados como parâmetros. Estes 
+limiares, $T_{cp}$ e $T_{rp}$, serão usados para verificar se o resultado de um 
+gradiente de cores aplicado a função de similaridade está aceitável de acordo 
+com a percepção associada ao limiar usado. Os valores de $T_{cp}$ e $T_{rp}$ devem estar dentro do 
+intervalo $[0,1]$ e são determinados manualmente, como uma forma de manipular o que se busca do 
+resultado da segmentação. Ambos os parâmetros serão usados adiante em conjunto com a função de 
+avaliação de similaridade.
+
+\begin{enumerate} 
+%1.1
+\item Cada um dos \textit{clusters} identificados na pré-segmentação recebem rótulos únicos.
+\end{enumerate}
+
+%2.
+\item Regiões e suas relações de vizinhança são representadas através de um 
+grafo conexo $G(V,E)$. O grafo $G(V,E)$ serve de estrutura para os \textit{clusters} encontrados no 
+primeiro passo, provendo uma forma simples de descrever a topologia destes. O grafo é construído de 
+forma que os \textit{clusters} correspondem aos vértices $V=\{v_1,...,v_n\}$ (\ref{verticeseq}) e as 
+arestas $E=\{e_1,...,e_m\}$ (\ref{arestaseq}) representam a existência de uma relação de vizinhança 
+entre um par de vértices e, por conseqüência, entre pelo um ou mais pixels dos \textit{clusters} 
+relacionados. Cada aresta é valorada com o resultado da função de percepção para o gradiente de 
+cores entre seu par de vértices. A função de percepção será apresentada adiante.
+
+\begin{equation}
+V=\{v_i \in V | v_i = c_k \land c_k \in C\}
+\label{verticeseq}
+\end{equation}
+
+\begin{equation}
+E=\{e_i \in E | e_i = (v_n,v_m,\phi) \land v_n \ne v_m \land v_n, v_m \in V \land \phi = 
+f_p(v_n,v_m)\}
+\label{arestaseq}
+\end{equation}
+
+\begin{enumerate}
+%2.1
+\item Este grafo será sempre um grafo conexo porque todas regiões 
+representadas pelos vértices são contidas em uma mesma imagem, e através das 
+arestas que ligam regiões vizinhas é possível estabelecer caminhos entre 
+quaisquer dois vértices $v_1$ e $v_2$ tal como é possível encontrar caminhos 
+ligando quaisquer dois pixels $p_1$ e $p_2$ em uma mesma imagem.
+
+\end{enumerate}
+
+%3.
+\item No próximo estágio do algoritmo, cada vértice $v \in V$ é associada com 
+uma única e nova \textit{meta-região} $m \in M$. Meta-regiões são repositórios 
+lógicos que serão usados para armazenar grupos de regiões que possuem um caminho 
+entre elas e que estão ligados através de gradientes de cores que são 
+considerados aceitáveis de acordo com a medida de similaridade proposta, através 
+da função de percepção $f_p$ e de um limiar de percepção $T_p$. A meta do GNM é 
+unir meta-regiões.
+
+\begin{enumerate}
+%3.1
+\item Todas meta-regiões se comportarão como sub-grafos conectados, significando 
+que qualquer vértice contido por uma certa meta-região tem pelo menos um caminho 
+para qualquer outro vértice também contido na mesma meta-região (Equação \ref{metaeq}).
+
+\begin{equation}
+M = \{m_i \in M | \bigcup_{j=1}^{n}(v_j \in V) \land \exists ( e_k \in E \land v_n, v_m \in V \land 
+  \phi = f_p(v_n,v_m) \land (v_n,v_m,\phi) = e_k)\}
+\label{metaeq}
+\end{equation}
+
+%3.2
+\item Qualquer vértice $v \in V$ pode pertencer a somente uma meta-região, ou 
+seja, meta-regiões são conjuntos particionados de vértices e conseqüentemente 
+irão também dividir a imagem final em partições.
+
+\end{enumerate}
+
+%4.
+\item O objetivo do algoritmo agora é minimizar $||G(V,E)||$, isto é, a cardinalidade dos vértices 
+através de um procedimento de união que busca subgrafos $S_i \subseteq G$ que representem 
+$min(\sum_{k=1}^N f_p(v_1,v_2), v_1, v_2 \subset e_k)$, sabendo que $N$ é a cardinalidade das 
+arestas do grafo $G(V,E)$. O algoritmo então percorre o grafo $G(V,E)$ procurando nas arestas que 
+conectam vértices $v_1, v_2 \in V$ por gradientes suaves suficientes para serem 
+considerados aceitáveis de acordo com a percepção para esta aresta, resultando 
+na união de tais vértices em uma mesma meta-região $m \in M$.
+
+\begin{enumerate}
+%4.1
+\item A meta é verificar se estas duas regiões podem ser colocadas em uma mesma 
+meta-região $m \in M$, significando que ambas são consideradas similares pela 
+medida. Algumas medidas são tomadas para garantir uma seqüência determinística e 
+que gere resultados independentes de inicialização. Cada aresta $e \in E$ 
+passará por uma avaliação inicial. Essa avaliação é realizada por uma função 
+chamada \textit{função de percepção} $f_p$, que é aplicada após a classificação 
+de tal aresta em relação a percepção, clara ou prejudicada, que esta se 
+encontra. Se, de acordo com tal percepção, com a função de percepção e os 
+parâmetros de aceitação estabelecidos, for verificada uma continuidade de cor 
+suficientemente suave na aresta avaliada essa aresta então é aceita. Aceitação 
+significa que esta aresta será agora contida em um conjunto auxiliar, 
+correspondente a sua percepção, onde será ordenada crescentemente dentro desse 
+conjunto de acordo com o valor resultante da função $f_p$.
+
+As arestas avaliadas, aceitas e ordenadas, então, são agrupadas em dois 
+conjuntos separados, um conjunto para avaliação clara e outro para prejudicada. 
+O conjunto de percepção clara será percorrido inicialmente, seguido pelo de 
+percepção prejudicada. Essa separação é feita para não haver uma ambigüidade em 
+relação a ordenação pelo resultado da função de percepção $f_p$, decorrente do 
+fato que, como será explicado logo a seguir, arestas são avaliadas 
+diferentemente por esta função de acordo com a percepção em que se encontram 
+tais arestas. Essa escolha de ordem de varredura não afetará o resultado, 
+pois arestas que são suficientemente contínuas e similares serão unidas porque 
+a) são avaliadas por percepções independentes b) a vizinhança representada por 
+tal só pode ser excluída caso de união entre as regiões envolvidas pela 
+avaliação anterior de que tais regiões pertencem a um caminho contínuo e 
+semelhante, tornando desnecessária avaliação posterior e tal relação de 
+vizinhança c) a união das regiões envolvidas nestas arestas não afeta a 
+avaliação da função de percepção $f_p$.
+
+Essa combinação de medidas garantirá que uma mesma ordem seja sempre obedecida 
+na varredura de arestas e na fusão de meta-regiões que sejam semelhantes, 
+não havendo conseqüências a avaliação das arestas iniciando em diferentes pontos 
+ou em ordens diferentes.
+
+O conceito relacionado a percepções foi desenvolvido a partir do que foi visto 
+em \cite{huang2006natural}, onde a diferença de percepção de cor é usada para 
+aperfeiçoar a avaliação de contraste em imagens. Com estas percepções e as 
+propriedades elas provêm, fica mais fácil tornar o método robusto a mudanças de 
+iluminação e presença de sombras na cena. Também é um conceito interessante 
+porque a questão da variação suave de cores nos objetos é diretamente conectada 
+a iluminação e este tipo de avaliação através de percepções oferece uma 
+propriedade interessante para lidar com este tipo de característica. No 
+algoritmo serão usados dois tipos de percepções:
+
+\begin{itemize}
+\item \textbf{Percepção clara}, onde há uma boa saturação de cor e níveis 
+razoáveis de luminosidade;
+\item \textbf{Percepção prejudicada}, onde há uma baixa saturação de cor e/ou 
+intensidades muito altas ou baixas de luz.
+\end{itemize}
+
+Os valores de cor dos vértices serão convertidos para o espaço de cores HSL, 
+composto por três eixos ortogonais que representam, respectivamente, 
+matiz (\textit{hue}), saturação (\textit{saturation}) e luminosidade 
+(\textit{luminance}). Na versão que os testes foram realizados os níveis de 
+aceitação para ambas as percepções são definidos parametricamente como 
+intervalos de valores de aceitação individualmente para matiz, saturação e 
+luminosidade. Estes intervalos devem particionar o intervalo que os valores de 
+HSL podem assumir de forma que uma ligação seja classificada somente como 
+percepção clara ou prejudicada.
+
+As equações precisam de dois vértices como parâmetros de entrada. Devem sempre 
+ser regiões atômicas vizinhas, como conseqüência do fato que os vértices são 
+extraídos das arestas do grafo e herdam tal propriedade destas. Dados ambos os 
+vértices e o tipo de percepção que o gradiente se encaixa, é checada se o valor 
+encontrada com a avaliação da função de percepção $f_p$ é aceitável em relação 
+ao limiar $T_p$ definido parametricamente para a percepção usada. A definição da 
+função é feita em \ref{fpeq}.
+
+\begin{equation}
+f_p(v_1,v_2)=
+\begin{cases}
+	\alpha_{cp} * min( | \int_{H(v_1)}^{H(v_2)} d\theta |, 1.0 - | 
+\int_{H(v_1)}^{H(v_2)} d\theta | ) + \beta_{cp} * | S(v_1) - S(v_2) | + 
+\\ \gamma_{cp} * | L(v_1) - L(v_2) |, clear \mbox{ } perception \\
+	\beta_{rp} * | S(v_1) - S(v_2) | + \gamma_{rp} * | L(v_1) - L(v_2) |, 
+rough \mbox{ } perception
+\end{cases}
+\label{fpeq}
+\end{equation}
+
+onde $f_p$ é a função de avaliação de suavidade de gradientes e toma dois 
+vértices $v_1, v_2 \in V$ como parâmetros. As funções $H, S, L$ tomam um vértice 
+$v \in V$ como parâmetro e fornecem o valor médio de, respectivamente, matiz, 
+saturação e luminosidade normalizados no intervalo $[0,1]$ dos valores de cor 
+das posições dos pixels na imagem que o vértice $v$ contém. Os coeficientes 
+$\alpha \mbox{, } \beta \mbox{ and } \gamma$ correspondem à percepção com a qual 
+o gradiente entre os vértices deve ser avaliado. Todos os testes apresentados 
+adiante foram realizados com os seguintes valores:
+
+$\\
+\begin{array}{lcl}
+	\mbox{ \textbf{clear perception} } & : &  
+\alpha_{cp}=0.7,\beta_{cp}=0.2,\gamma_{cp}=0.1 \\
+	\mbox{ \textbf{rough perception} } & : & \beta_{rp}=0.2,\gamma_{rp}=0.8
+\end{array}
+\\$
+
+No caso de sucesso, significando que o resultado é menor que o limiar 
+$T_p$, a aresta é adicionada ao conjunto correspondente a percepção respectiva à 
+aresta. Em passos posteriores esse conjunto será percorrido e a união entre as 
+meta-regiões envolvidas será realizada. A equação \ref{mergeconditioneq} representa essa 
+relação.
+
+\begin{equation}
+f_p(v_1,v_2)<T_p \to m_1, m_2 \in M | v_1 \subset m_1 \land v_2 \subset m_2, 
+m_1 \cup m_2
+\label{mergeconditioneq}
+\end{equation}
+
+Se não for menor que o limiar $T_p$, então nada é feito e a aresta avaliada não 
+é adicionada aos conjuntos que serão percorridos posteriormente, por 
+conseqüência não tendo possibilidade de, neste ponto, pelo menos, haver a união 
+entre as meta-regiões dos vértices que têm sua relação de vizinhança 
+representada por tal aresta.
+
+%4.2
+\item Criados esses dois conjuntos ordenados de arestas, o percorrimento 
+respectivo desses conjuntos é iniciado. Para cada aresta $e \in E$ avaliada, se 
+os vértices já são contidos por uma mesma meta-região não há razão 
+para continuar verificando, pois as meta-regiões $m_1, m_2 \in M$ a que os 
+vértices vizinhos $v_1, v_2 \in V$ correspondem já foram identificados como 
+suficientemente semelhantes em um momento anterior. O próximo passo, nesse caso, 
+é ir para a aresta seguinte no conjunto ordenado. Cada aresta é examinada 
+somente uma vez.
+
+%4.3
+\item Se ambos vértices não pertencem a uma mesma meta-região $m \in M$, uma 
+união é realizada entre as meta-regiões $m_1, m_2 \in M$ que contêm 
+os vértices $v_1, v_2 \in V | v_1 \subset m_1 \land v_2 \subset m_2$, porque o 
+gradiente entre estas regiões foi considerado suficientemente suave dentro da 
+percepção observada e então estas regiões correspondem na verdade a um único 
+objeto na cena da imagem. Nenhum outro tipo de mudança é realizada nos vértices 
+ou nas arestas.
+
+%4.4
+%\item As meta-regiões resultantes após as uniões realizadas ao longo do 
+%percorrimento das arestas avaliadas e aceitas como semelhantes representarão os 
+%objetos na cena, formadas pela união das regiões atômicas de baixa entropia 
+%dadas pela imagem pré-processada, que são conectadas através de gradientes de 
+%cor suave e contínuos.
+
+\end{enumerate}
+
+%5.
+%\item Finalmente, a imagem de saída será construída baseada na meta-regiões $m 
+%\in M$, onde a cor de cada objeto nessa imagem será o valor médio das cores de 
+%todos os vértices $v \in V$ contidos pela meta-região $m$.
+\item Ao final da realização do processo de minimização da cardinalidade do grafo $G(V,E)$, as 
+partições representando os objetos encontrados na imagem equivalem às meta-regiões $m \in M$ 
+restantes após as uniões realizadas ao longo do processo.
+
+\end{enumerate}
+
+\begin{figure}[here]
+\centering
+\includegraphics[width=4.5in]{imgs/gnm/gnm_flow.png}
+\caption{Diagrama representando o processo do algoritmo do Método de Redes de 
+Gradientes (GNM)}
+\label{gnm_flow}
+\end{figure}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Pós-processamento: eliminação de fragmentos}
+
+A segmentação realizada pelo GNM apresenta um problema: regiões razoavelmente 
+pequenas, aqui chamadas de fragmentos, quando não conseguem ser fundidas em 
+nenhum momento através da avaliação de gradientes suaves e contínuos persistem 
+na imagem resultante e prejudicam a avaliação desta imagem. Tais fragmentos, em 
+geral, apresentam cores bastante diferentes de regiões ao seu redor e surgem em 
+geral na pré-segmentação, especialmente no caso do CSC onde pequenos resíduos 
+acontecem mais facilmente. A falta de uma medida que em qualquer momento leve 
+tamanho de regiões atômicas em consideração é o principal fator causador desta 
+característica.
+
+Como estas regiões são muito pequenas e muito provavelmente não possuem 
+significado na cena da imagem, foi desenvolvido um passo de pós-processamento 
+para eliminar estes fragmentos. Assim, haverá uma redução no número de objetos 
+na cena final e objetos de menor relevância ou nenhuma relevância se fundirão a 
+outros mais importantes e representativos, permitindo uma melhor avaliação dos 
+resultados. Técnicas apresentadas em \cite{angulo2007modelling} e 
+\cite{bosch2007segmentation} realizam processamentos semelhantes também em busca 
+de aperfeiçoar a qualidade da segmentação nas imagens resultantes.
+
+Esse pós-processamento se baseia na definição de limites de tamanhos e um limiar 
+de similaridade de cor. São definidos dois limiares de tamanho. O maior limiar 
+define a partir de qual tamanho regiões serão avaliadas pelo pós-processamento. 
+O menor define a partir de qual tamanho, se caso não houver sucesso na fusão 
+através da avaliação por similaridade de cor, regiões que se encaixem nesse 
+limiar serão fundidas a maior região com a qual compartilharem um relacionamento 
+de vizinhança. Todas as regiões resultantes da segmentação do GNM serão testadas 
+sob estas condições. O algoritmo para este pós-processamento então é:
+
+\begin{enumerate}
+\item Selecionar uma região presente no resultado da segmentação do GNM ainda 
+não pós-processada.
+\item Avaliar se esta região é pequena o suficiente, de acordo com o maior 
+limiar de tamanho, para ser avaliada. 
+    \begin{enumerate}
+    \item Se não, selecionar outra região não avaliada, se houver, ou encerrar, 
+caso não existam mais regiões a serem avaliadas.
+    \end{enumerate}
+\item Caso seja suficientemente pequena, avaliar todas as regiões vizinhas e 
+verificar aquela que apresenta maior semelhança e de forma que tal semelhança 
+seja aceitável de acordo com o limiar de semelhança de cor estabelecido. Se 
+houver uma região que seja qualificada sob estas condições esta região será 
+selecionada para ser fundida com a região atual.
+    \begin{enumerate}
+    \item Se nenhuma região vizinha for suficientemente semelhante em termos de 
+cor, avalia-se se a região atual é menor que o segundo limiar de tamanho. Se 
+sim, esta região será fundida à região de maior tamanho que for sua vizinha.
+    \end{enumerate}
+\item Se ainda houver regiões não avaliadas, voltar ao primeiro passo. 
+Se não, encerrar.
+\end{enumerate}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+

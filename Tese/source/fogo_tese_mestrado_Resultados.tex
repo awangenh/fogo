@@ -1,0 +1,1933 @@
+\chapter{Resultados}
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Avaliação da qualidade de imagem das segmentações}
+
+\subsection{Experimento}
+
+De modo a conseguir objetivamente selecionar a pré-segmentação ideal para ser usada com a abordagem 
+do GNM e, assim, escolher os melhores parâmetros de segmentação para cada algoritmo, assume-se que 
+imagens de \textit{ground truth} representam o julgamento de um observador apto, provavelmente um 
+especialista, servindo como um padrão ouro a ser atingido. O processo de avaliação dos resultados de 
+segmentação de imagens foi investigado por vários pesquisadores como \cite{unnikrishnan2007toward}, 
+\cite{sahasrabundhe1999structured} e \cite{gesu1999distance}.
+
+Como fonte de imagens de \textit{ground truth} foi selecionada a base de imagens de Berkeley 
+\cite{martin2001database}. Esse conjunto de imagens é reconhecido na comunidade de processamento de 
+imagens e cada imagem contida nessa base possui entre cinco a sete diferentes \textit{ground truths} 
+gerados por diferentes indivíduos. A avaliação adotada aqui será realizada com um conjunto de 16 
+imagens selecionadas desta base de imagens, de forma que as imagens selecionadas apresentam fortes 
+gradientes que resultam em variações de cor contínuas para um mesmo objeto.
+
+A avaliação objetiva da qualidade dos resultados do GNM seguirá um procedimento comparativo a outras 
+técnicas do estado da arte. O primeiro passo foi a geração de uma série de resultados de segmentação 
+com os algoritmos \textit{Color Structured Code} (CSC) \cite{rehrmann1998fast}, Mumford \& Shah 
+(M\&S) \cite{mumford1989optimal}, \textit{Watershed} (WS) \cite{vincent1991watersheds}, RHSEG 
+\cite{tilton2006ddimensional}, JSEG \cite{martin2001database}, Blobworld \cite{carson2002blobworld}, 
+uma segmentação que utiliza maximização de expectativa voltada especialmente para pesquisa e busca 
+de imagens,  e Edison, que é uma implementação da segmentação baseada em \textit{mean-shift} 
+apresentada em \cite{comaniciu2002mean}. Adicionalmente aos resultados individuais de cada uma 
+destas técnicas foram obtidas segmentações com o GNM combinado com pré-segmentações obtidas com os 
+algoritmos CSC, M\&S, Edison e WS. O propósito é validar o algoritmo GNM como uma técnica de 
+segmentação tão capaz quanto as outras selecionadas para os testes.
+
+Em relação aos testes realizados com o GNM, todas as pré-segmentações foram obtidas de um conjunto 
+de diferentes faixas de parâmetros. Apesar de os parâmetros serem específicos de acordo com cada 
+pré-segmentação utilizada, a meta é a mesma, adquirir uma imagem super-segmentada evitando 
+vazamentos e preservando gradientes suaves. Os parâmetros usados nas pré-segmentações foram os 
+seguintes:
+
+\begin{itemize}
+\item \textit{Color Structured Code}: limiar igual a $30$;
+\item Mumford \& Shah: $lambda$ igual a $600$;
+\item Edison: parâmetros $SS=3$ e $SR=8$;
+\item \textit{Watershed}: condutância igual a $2$, número de iterações igual a $10$ e limiar igual a 
+$0.01$.
+\end{itemize}
+
+Sobre cada uma destas pré-segmentações foi realizada uma série de segmentações com o GNM. Dois 
+parâmetros somente foram variados nestes testes, $t_{cp}$ e $t_{rp}$, ambos variando no intervalo 
+$[0.01, 0.07]$, utilizando incrementos de $0.005$. Todos os testes usam ainda os seguintes 
+intervalos para os parâmetros restantes, com intervalos semelhantes aos encontrados em 
+\cite{huang2006natural}. Com todos os valores de HSL normalizados dentro do intervalo $[0,1]$:
+
+$\begin{array}{lcl}
+    \mbox{\textbf{Percepção clara:} } $ = $ \{ (S > 0.1) \land (0.2 < L < 0.95) 
+\} \\
+    \mbox{\textbf{Percepção prejudicada:} } $ = $ \{ (S \le 0.1) \lor (L \le 
+0.2) \lor (L \ge 0.95) \}
+\end{array}
+$
+
+Os parâmetros usados no passo de pós-processamento foram os seguintes:
+
+\begin{itemize}
+\item Maior limite de tamanho: $50$
+\item Menor limite de tamanho: $10$
+\item Similaridade de cor: $0.5$
+\end{itemize}
+
+As técnicas do estado da arte que tiveram as segmentações individuais selecionadas para comparação 
+também foram testadas com uma série de parâmetros. Os intervalos de parâmetros e os incrementos 
+usados são os seguintes:
+
+\begin{itemize}
+\item \textit{Color Structured Code}: $20 \le limiar \le 100$, incremento igual a $10$;
+\item Mumford \& Shah: $1000 \le lambda \le 15000$, incremento igual a $500$;
+\item Edison: $3 \le SS \le 30$, com incremento de $1$, e $SR=8$;
+\item \textit{Watershed}: condutância igual a $2$, número de iterações igual a $10$ e $0 \le limiar 
+\le 0.5$.
+\end{itemize}
+
+Os algoritmos Blobworld e JSEG são técnicas não-supervisionadas e não requerem a passagem de 
+parâmetros. O algoritmo RHSEG é supervisionado, porém, com é intrisecamente hierárquico não requereu 
+a passagem de um intervalo de parâmetros. As segmentações com o RHSEG foram feitas com a 
+similaridade de entropia, com um fator de convergência igual a $1.75$ e com uma importância de $0.1$ 
+a \textit{clusterização} espectral.
+
+Após a geração das séries de imagens com as técnicas selecionadas com os parâmetros listados, foi 
+realizada uma inspeção visual para a seleção daqueles que foram os melhores resultados para cada 
+imagem do conjunto. Os resultados selecionados foram aqueles que melhor particionaram as imagens em 
+regiões relevantes. Esta seleção com intervenção manual é considerada um filtragem simples das 
+segmentações e o grupo de imagens selecionadas será em seguida avaliada por medidas específicas para 
+este fim para que seja possível quantificar a qualidade das imagens segmentadas obtidas.
+
+As imagens selecionadas de cada um dos conjuntos extraídos da base de imagens de Berkeley testados 
+podem ser vistas a partir da figura \ref{image:imageset_2092} até a figura 
+\ref{image:imageset_368078}. Os parâmetros com que essas imagens foram obtidas podem ser vistos no 
+anexo \ref{anexo:parametros}.
+
+%------------------------------ SET 2092 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/2092/2092_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 2092 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_2092}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 2092 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{ccc}
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092.png} & 
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_gt.png} & \\
+%    Original & Example & \\
+%
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_csc.png} &  
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_cscgnm.png} & \\
+%    CSC & CSC+GNM & \\
+%
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_ms.png} & 
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_msgnm.png} & \\
+%    M\&S & M\&S+GNM & \\
+%
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_ws.png} &  
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_wsgnm.png} & \\
+%    WS & WS+GNM & \\
+%
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_edison.png} & 
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_edisongnm.png} & \\
+%    Edison & Edison+GNM & \\
+%
+%   \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_rhseg.png} & 
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_jseg.png} & 
+%    \includegraphics[width=1.7in]{imgs/image_sets/2092/2092_blobworld.png} \\
+%    RHSEG & JSEG & Blobworld\\
+%\end{tabular}
+%\label{table:images_2092}
+%\end{table}
+
+%------------------------------ SET 15088 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/15088/15088_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 15088 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_15088}
+\end{figure}
+
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 15088 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{cccc}
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088.png} & 
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_gt.png} & 
+%    & \\
+%    Original & Example & & \\
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_csc.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_cscgnm.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_ms.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_msgnm.png} \\
+%    CSC & CSC+GNM & M\&S & M\&S+GNM  \\
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_ws.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_wsgnm.png} &  
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_edison.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_edisongnm.png} \\
+%    WS & WS+GNM & Edison & Edison+GNM \\
+%     
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_rhseg.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_jseg.png} &
+%    \includegraphics[height=1.7in]{imgs/image_sets/15088/15088_blobworld.png} & \\
+%    RHSEG & JSEG & BLOBWORLD & \\
+%\end{tabular}
+%\label{table:images_15088}
+%\end{table}
+
+%------------------------------ SET 22090 ------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/22090/22090_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 22090 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_22090}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 22090 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{cc}
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_gt.png} \\
+%    Original & Example \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_pre_csc30.png} &  
+%\includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_cscgnm.png} \\
+%    CSC pre-segmentation $threshold=30$ & CSC+GNM $t_{cp}=0.025,t_{rp}=0.065$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_pre_ms600.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_msgnm.png} \\
+%    M\&S pre-segmentation $lambda=600$ & M\&S+GNM $t_{cp}=0.02,t_{rp}=0.07$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_ms11000.png} &  
+%\includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_csc40.png} \\
+%    M\&S $lambda=11000$ & CSC $threshold=40$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_rhseg11.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/22090/22090_jseg.png} \\
+%    RHSEG $level=11$ & JSEG \\
+%\end{tabular}
+%\label{table:images_22090}
+%\end{table}
+
+%------------------------------ SET 24004 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/24004/24004_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 24004 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_24004}
+\end{figure}
+
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 24004 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{ccc}
+%    \includegraphics[height=2in]{imgs/tests_gnm/24004/24004.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/24004/24004_pre_csc30.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/24004/24004_cscgnm.png} \\
+%    Original & CSC pre-segmentation $threshold=30$ & CSC+GNM 
+%$t_{cp}=0.035,t_{rp}=0.025$ \\
+%    \includegraphics[height=2in]{imgs/tests_gnm/24004/24004_gt.png} &
+%    \includegraphics[height=2in]{imgs/tests_gnm/24004/24004_pre_ms600.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/24004/24004_msgnm.png} \\
+%    Example & M\&S pre-segmentation $lambda=600$ & M\&S+GNM 
+%$t_{cp}=0.035,t_{rp}=0.045$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/24004/24004_ms12000.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/24004/24004_csc50.png} \\
+%     & M\&S $lambda=12000$ & CSC $threshold=50$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/24004/24004_rhseg22.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/24004/24004_jseg.png} \\
+%     & RHSEG $level=22$ & JSEG \\
+%\end{tabular}
+%\label{table:images_24004}
+%\end{table}
+
+%------------------------------ SET 42049 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/42049/42049_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 42049 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_42049}
+\end{figure}
+
+%------------------------------ SET 46076 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/46076/46076_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 46076 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_46076}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 46076 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{ccc}
+%    \includegraphics[height=2in]{imgs/tests_gnm/46076/46076.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/46076/46076_pre_csc30.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/46076/46076_cscgnm.png} \\
+%    Original & CSC pre-segmentation $threshold=30$ & CSC+GNM 
+%$t_{cp}=0.035,t_{rp}=0.06$ \\
+%    \includegraphics[height=2in]{imgs/tests_gnm/46076/46076_gt.png} &
+%    \includegraphics[height=2in]{imgs/tests_gnm/46076/46076_pre_ms600.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/46076/46076_msgnm.png} \\
+%    Example & M\&S pre-segmentation $lambda=600$ & M\&S+GNM 
+%$t_{cp}=0.04,t_{rp}=0.065$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/46076/46076_ms8000.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/46076/46076_csc70.png} \\
+%     & M\&S $lambda=8000$ & CSC $threshold=70$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/46076/46076_rhseg28.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/46076/46076_jseg.png} \\
+%     & RHSEG $level=28$ & JSEG \\
+%\end{tabular}
+%\label{table:images_46076}
+%\end{table}
+
+%------------------------------ SET 48055 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/48055/48055_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 48055 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_48055}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 48055 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{ccc}
+%    \includegraphics[height=2in]{imgs/tests_gnm/48055/48055.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/48055/48055_pre_csc30.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/48055/48055_cscgnm.png} \\
+%    Original & CSC pre-segmentation $threshold=30$ & CSC+GNM 
+%$t_{cp}=0.035,t_{rp}=0.055$ \\
+%    \includegraphics[height=2in]{imgs/tests_gnm/48055/48055_gt.png} &
+%    \includegraphics[height=2in]{imgs/tests_gnm/48055/48055_pre_ms600.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/48055/48055_msgnm.png} \\
+%    Example & M\&S pre-segmentation $lambda=600$ & M\&S+GNM 
+%$t_{cp}=0.045,t_{rp}=0.065$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/48055/48055_ms11500.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/48055/48055_csc70.png} \\
+%    & M\&S $lambda=11500$ & CSC $threshold=70$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/48055/48055_rhseg16.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/48055/48055_jseg.png} \\
+%     & RHSEG $level=16$ & JSEG \\
+%\end{tabular}
+%\label{table:images_48055}
+%\end{table}
+
+%------------------------------ SET 60079 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/60079/60079_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 60079 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_60079}
+\end{figure}
+
+%------------------------------ SET 68077 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/68077/68077_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 68077 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_68077}
+\end{figure}
+
+%------------------------------ SET 80099 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/80099/80099_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 80099 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_80099}
+\end{figure}
+
+%------------------------------ SET 118035 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/118035/118035_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 118035 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_118035}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 118035 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{cc}
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_gt.png} \\
+%    Original & Example \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_pre_csc30.png} & 
+% \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_cscgnm.png} \\
+%    CSC pre-segmentation $threshold=30$ & CSC+GNM $t_{cp}=0.065,t_{rp}=0.035$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_pre_ms600.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_msgnm.png} \\
+%    M\&S pre-segmentation $lambda=600$ & M\&S+GNM $t_{cp}=0.055,t_{rp}=0.06$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_ms10000.png} &  
+%\includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_csc60.png} \\
+%    M\&S $lambda=10000$ & CSC $threshold=60$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_rhseg18.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/118035/118035_jseg.png} \\
+%    RHSEG $level=18$ & JSEG \\
+%\end{tabular}
+%\label{table:images_118035}
+%\end{table}
+
+%------------------------------ SET 143090 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/143090/143090_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 143090 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_143090}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 143090 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{cc}
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_gt.png} \\
+%    Original & Example \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_pre_csc30.png} & 
+% \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_cscgnm.png} \\
+%    CSC pre-segmentation $threshold=30$ & CSC+GNM $t_{cp}=0.035,t_{rp}=0.015$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_pre_ms600.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_msgnm.png} \\
+%    M\&S pre-segmentation $lambda=600$ & M\&S+GNM $t_{cp}=0.035,t_{rp}=0.045$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_ms10500.png} &  
+%\includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_csc70.png} \\
+%    M\&S $lambda=10500$ & CSC $threshold=70$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_rhseg13.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/143090/143090_jseg.png} \\
+%    RHSEG $level=13$ & JSEG \\
+%\end{tabular}
+%\label{table:images_143090}
+%\end{table}
+
+%------------------------------ SET 196073 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/196073/196073_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 196073 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_196073}
+\end{figure}
+
+%------------------------------ SET 253036 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/253036/253036_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 253036 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_253036}
+\end{figure}
+
+%------------------------------ SET 310007 -----------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[width=1.7in]{imgs/image_sets/310007/310007_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 310007 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_310007}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 310007 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{cc}
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_gt.png} \\
+%    Original & Example \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_pre_csc30.png} & 
+% \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_cscgnm.png} \\
+%    CSC pre-segmentation $threshold=30$ & CSC+GNM $t_{cp}=0.03,t_{rp}=0.065$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_pre_ms600.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_msgnm.png} \\
+%    M\&S pre-segmentation $lambda=600$ & M\&S+GNM $t_{cp}=0.04,t_{rp}=0.055$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_ms8000.png} &  
+%\includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_csc60.png} \\
+%    M\&S $lambda=8000$ & CSC $threshold=60$ \\
+%    \includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_rhseg13.png} & 
+%\includegraphics[width=2.5in]{imgs/tests_gnm/310007/310007_jseg.png} \\
+%    RHSEG $level=13$ & JSEG \\
+%\end{tabular}
+%\label{table:images_310007}
+%\end{table}
+
+%------------------------------ SET 368078 -------------------------------%
+
+\begin{figure}[here]
+\centering
+\subfigure[Original]
+{
+	\label{teste:a}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078.png}
+}
+\subfigure[Exemplo]
+{
+	\label{teste:b}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_gt.png}
+}
+\subfigure[CSC]
+{
+	\label{teste:c}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_csc.png}
+}
+\subfigure[CSC+GNM]
+{
+	\label{teste:d}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_cscgnm.png}
+}
+\subfigure[M\&S]
+{
+	\label{teste:e}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_ms.png}
+}
+\subfigure[M\&S+GNM]
+{
+	\label{teste:f}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_msgnm.png}
+}
+\subfigure[WS]
+{
+	\label{teste:g}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_ws.png}
+}
+\subfigure[WS+GNM]
+{
+	\label{teste:h}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_wsgnm.png}
+}
+\subfigure[Edison]
+{
+	\label{teste:i}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_edison.png}
+}
+\subfigure[Edison+GNM]
+{
+	\label{teste:j}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_edisongnm.png}
+}
+\subfigure[RHSEG]
+{
+	\label{teste:k}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_rhseg.png}
+}
+\subfigure[JSEG]
+{
+	\label{teste:l}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_jseg.png}
+}
+\subfigure[Blobworld]
+{
+	\label{teste:m}
+	\includegraphics[height=1.7in]{imgs/image_sets/368078/368078_blobworld.png}
+}
+\caption{GNM comparado com outros métodos de segmentação usando a imagem 368078 
+da base de dados de testes de segmentação \cite{martin2001database}.}
+\label{image:imageset_368078}
+\end{figure}
+
+%\begin{table}[l]
+%\caption{GNM comparado com outros métodos de segmentação usando a imagem 368078 
+%da base de dados de testes de segmentação \cite{martin2001database}.}
+%\begin{tabular}{ccc}
+%    \includegraphics[height=2in]{imgs/tests_gnm/368078/368078.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/368078/368078_pre_csc30.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/368078/368078_cscgnm.png} \\
+%    Original & CSC pre-segmentation $threshold=30$ & CSC+GNM 
+%t_{cp}=0.05,t_{rp}=0.065$ \\
+%    \includegraphics[height=2in]{imgs/tests_gnm/368078/368078_gt.png} &
+%    \includegraphics[height=2in]{imgs/tests_gnm/368078/368078_pre_ms600.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/368078/368078_msgnm.png} \\
+%    Example & M\&S pre-segmentation $lambda=600$ & M\&S+GNM 
+%$t_{cp}=0.055,t_{rp}=0.07$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/368078/368078_ms11000.png} &  
+%\includegraphics[height=2in]{imgs/tests_gnm/368078/368078_csc90.png} \\
+%     & M\&S $lambda=11000$ & CSC $threshold=90$ \\
+%     &
+%    \includegraphics[height=2in]{imgs/tests_gnm/368078/368078_rhseg30.png} & 
+%\includegraphics[height=2in]{imgs/tests_gnm/368078/368078_jseg.png} \\
+%     & RHSEG $level=30$ & JSEG \\
+%\end{tabular}
+%\label{table:images_368078}
+%\end{table}
+
+\clearpage
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\subsection{Avaliação}
+
+As segmentações de imagens obtidas e selecionadas de acordo com os critérios apresentados foram 
+objetivamente avaliadas com medidas de distância desenvolvidas para a tarefa de avaliar a qualidade 
+de segmentação de imagens. A meta destas medidas é comparar uma segmentação a uma dada imagem de 
+\textit{ground truth} e quantificar o qualidade da identificação dos objetos realizada pela 
+segmentação. O esperado é conseguir a segmentação mais semelhante às regiões esperadas definadas 
+pelo \textit{ground truth}. Nos testes realizados, foram usadas as medidas Rand 
+\cite{rand1971objective} e BGM \cite{jiang2006distance}, respectivamente, uma medida baseada em 
+contagem de pares e outra medida baseada em correspondência de conjuntos. As imagens de 
+\textit{ground truth} providas pela base de imagens de Berkeley foram testadas com ambas as medidas 
+de avaliação com o intuito de prover a qualidade obtida com as segmentações com o GNM. Tanto o Rand 
+quanto o BGM produzem valores dentro do intervalo $[0,1]$, onde $0$ significa uma perfeita 
+correspondência entre segmentação e \textit{ground truth} e $1$ significando nenhuma relação entre 
+ambos. O fato que ambas as medidas se encontram dentro de um intervalo específico facilita a 
+comparação entre algoritmos com diferentes abordagens e características, além de permitir a 
+comparação se resultados foram melhor avaliados com uma ou outra medida.
+
+Cada uma das imagens selecionadas foi, então, avaliada com ambas as medidas Rand e BGM para cada um 
+dos 5 a 7 \textit{ground truths} disponibilizados para cada conjunto. Os valores médios de Rand e 
+BGM resultantes para cada um dos pares de conjunto de imagens e algoritmos testados podem ser vistos 
+nas tabelas \ref{table:rand_average} e \ref{table:bgm_average}, respectivamente. A tabela 
+\ref{table:randbgm_comparison} apresenta os valores médios e desvio padrão para cada um dos 
+algoritmos testados para ambas as medidas de avaliação, permitindo uma comparação direta e geral de 
+quais algoritmos obtiveram melhores resultados. As informações dessas tabelas podem ser vista de 
+forma condensada no gráfico presente na figura \ref{image:randxbgm}. No anexo \ref{anexo:gts} 
+encontram-se os valores de Rand e BGM obtidos para cada \textit{ground truth} de cada conjunto de 
+imagens.
+
+%------------------------------ RAND MÉDIA -------------------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores médios obtidos nos testes com os conjuntos de imagens utilizando o índice de 
+avaliação Rand.}
+{\footnotesize \begin{tabular}{|l||r|r|r|r|r|r|}
+\hline    
+    \textit{Rand}& \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & 
+\textbf{68077} & \textbf{80099} \\
+    \hline
+    \textbf{CSC+GNM} & 0.033 & 0.052 & 0.022 & 0.037 & 0.177 & 0.119 \\
+    \textbf{M\&S+GNM} & 0.027 & 0.055 & 0.021 & 0.074 & 0.085 & 0.113 \\
+    \textbf{Edison+GNM} & 0.027 & 0.053 & 0.019 & 0.035 & 0.080 & 0.114 \\
+    \textbf{WS+GNM} & 0.060 & 0.048 & 0.024 & 0.037 & 0.097 & 0.113 \\
+    \textbf{CSC} & 0.064 & 0.059 & 0.027 & 0.037 & 0.332 & 0.128 \\
+    \textbf{M\&S} & 0.044 & 0.248 & 0.051 & 0.261 & 0.186 & 0.127 \\
+    \textbf{JSEG} & 0.083 & 0.248 & 0.052 & 0.239 & 0.221 & 0.108 \\
+    \textbf{Edison} & 0.027 & 0.052 & 0.043 & 0.036 & 0.065 & 0.109 \\
+    \textbf{WS} & 0.049 & 0.048 & 0.022 & 0.041 & 0.240 & 0.124 \\
+    \textbf{RHSEG} & 0.084 & 0.073 & 0.311 & 0.289 & 0.237 & 0.174 \\
+    \textbf{Blobworld} & 0.421 & 0.315 & 0.283 & 0.272 & 0.300 & 0.391 \\
+    \hline
+    \hline
+     & \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\
+    \hline
+    \textbf{CSC+GNM} & 0.056 & 0.119 & 0.183 & 0.105 & 0.097 & 0.079 \\
+    \textbf{M\&S+GNM} & 0.106 & 0.119 & 0.184 & 0.123 & 0.112 & 0.079 \\
+    \textbf{Edison+GNM} & 0.102 & 0.125 & 0.185 & 0.119 & 0.095 & 0.073 \\
+    \textbf{WS+GNM} & 0.070 & 0.512 & 0.213 & 0.369 & 0.179 & 0.091 \\
+    \textbf{CSC} & 0.091 & 0.133 & 0.188 & 0.194 & 0.429 & 0.235 \\
+    \textbf{M\&S} & 0.231 & 0.278 & 0.237 & 0.112 & 0.134 & 0.127 \\
+    \textbf{JSEG} & 0.152 & 0.481 & 0.232 & 0.079 & 0.227 & 0.138 \\
+    \textbf{Edison} & 0.124 & 0.120 & 0.200 & 0.096 & 0.437 & 0.073 \\
+    \textbf{WS} & 0.036 & 0.549 & 0.210 & 0.122 & 0.203 & 0.079 \\
+    \textbf{RHSEG} & 0.214 & 0.127 & 0.189 & 0.135 & 0.248 & 0.139 \\
+    \textbf{Blobworld} & 0.242 & 0.606 & 0.305 & 0.272 & 0.265 & 0.281 \\
+    \hline
+    & \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\
+    \hline
+    \textbf{CSC+GNM} & 0.049 & 0.080 & 0.109 & 0.091 & & \\
+    \textbf{M\&S+GNM} & 0.051 & 0.086 & 0.102 & 0.090 & & \\
+    \textbf{Edison+GNM} & 0.051 & 0.079 & 0.099 & 0.097 & & \\
+    \textbf{WS+GNM} & 0.046 & 0.139 & 0.099 & 0.088 & & \\
+    \textbf{CSC} & 0.051 & 0.124 & 0.108 & 0.316 & & \\
+    \textbf{M\&S} & 0.141 & 0.152 & 0.096 & 0.218 & & \\
+    \textbf{JSEG} & 0.054 & 0.160 & 0.107 & 0.235 & & \\
+    \textbf{Edison} & 0.108 & 0.070 & 0.105 & 0.094 & & \\
+    \textbf{WS} & 0.043 & 0.131 & 0.101 & 0.086 & & \\
+    \textbf{RHSEG} & 0.054 & 0.201 & 0.101 & 0.192 & & \\
+    \textbf{Blobworld} & 0.230 & 0.232 & 0.328 & 0.266 & & \\
+    \hline
+\end{tabular}}
+\label{table:rand_average}
+\end{table}
+
+
+%------------------------------ BGM MÉDIA -------------------------------%
+
+\begin{table}[h]
+\centering
+\caption{Valores médios obtidos nos testes com os conjuntos de imagens utilizando o índice de 
+avaliação BGM.}
+{\footnotesize \begin{tabular}{|l||r|r|r|r|r|r|}
+    \hline    
+    \textit{Rand}& \textbf{196073} & \textbf{253036} & \textbf{42049} & \textbf{60079} & 
+\textbf{68077} & \textbf{80099} \\
+    \hline
+    \textbf{CSC+GNM} & 0.039 & 0.012 & 0.123 & 0.014 & 0.309 & 0.043 \\
+    \textbf{M\&S+GNM} & 0.037 & 0.013 & 0.103 & 0.043 & 0.170 & 0.054 \\
+    \textbf{Edison+GNM} & 0.038 & 0.017 & 0.068 & 0.014 & 0.110 & 0.052 \\
+    \textbf{WS+GNM} & 0.027 & 0.006 & 0.132 & 0.012 & 0.268 & 0.017 \\
+    \textbf{CSC} & 0.031 & 0.014 & 0.023 & 0.016 & 0.032 & 0.046 \\
+    \textbf{M\&S} & 0.033 & 0.313 & 0.129 & 0.330 & 0.341 & 0.032 \\
+    \textbf{JSEG} & 0.010 & 0.282 & 0.192 & 0.258 & 0.501 & 0.028 \\
+    \textbf{Edison} & 0.042 & 0.010 & 0.022 & 0.014 & 0.062 & 0.008 \\
+    \textbf{WS} & 0.062 & 0.016 & 0.140 & 0.034 & 0.611 & 0.065 \\
+    \textbf{RHSEG} & 0.019 & 0.010 & 0.076 & 0.492 & 0.578 & 0.022 \\
+    \textbf{Blobworld} & 0.319 & 0.345 & 0.345 & 0.308 & 0.362 & 0.283 \\
+    \hline
+    \hline
+     & \textbf{2092} & \textbf{15088} & \textbf{24004} &  \textbf{46076} &  \textbf{310007} &  
+\textbf{368078} \\
+    \hline
+    \textbf{CSC+GNM} & 0.124 & 0.073 & 0.430 & 0.318 & 0.137 & 0.355 \\
+    \textbf{M\&S+GNM} & 0.129 & 0.109 & 0.463 & 0.409 & 0.181 & 0.385 \\
+    \textbf{Edison+GNM} & 0.159 & 0.121 & 0.429 & 0.417 & 0.158 & 0.328 \\
+    \textbf{WS+GNM} & 0.104 & 0.439 & 0.391 & 0.195 & 0.345 & 0.350 \\
+    \textbf{CSC} & 0.114 & 0.084 & 0.412 & 0.245 & 0.086 & 0.154 \\
+    \textbf{M\&S} & 0.262 & 0.170 & 0.557 & 0.331 & 0.292 & 0.489 \\
+    \textbf{JSEG} & 0.056 & 0.375 & 0.555 & 0.259 & 0.340 & 0.455 \\
+    \textbf{Edison} & 0.103 & 0.114 & 0.424 & 0.072 & 0.038 & 0.314 \\
+    \textbf{WS} & 0.171 & 0.458 & 0.405 & 0.223 & 0.440 & 0.369 \\
+    \textbf{RHSEG} & 0.323 & 0.078 & 0.487 & 0.360 & 0.448 & 0.389 \\
+    \textbf{Blobworld} & 0.323 & 0.635 & 0.433 & 0.400 & 0.376 & 0.439 \\
+    \hline
+    \hline
+    & \textbf{22090} &  \textbf{48055} &  \textbf{118035} &  \textbf{143090} & & \\
+    \hline
+    \textbf{CSC+GNM} & 0.243 & 0.109 & 0.202 & 0.206 & & \\
+    \textbf{M\&S+GNM} & 0.284 & 0.132 & 0.275 & 0.206 & & \\
+    \textbf{Edison+GNM} & 0.255 & 0.116 & 0.226 & 0.227 & & \\
+    \textbf{WS+GNM} & 0.213 & 0.229 & 0.233 & 0.170 & & \\
+    \textbf{CSC} & 0.242 & 0.193 & 0.192 & 0.173 & & \\
+    \textbf{M\&S} & 0.147 & 0.328 & 0.205 & 0.465 & & \\
+    \textbf{JSEG} & 0.214 & 0.413 & 0.238 & 0.512 & & \\
+    \textbf{Edison} & 0.204 & 0.080 & 0.066 & 0.157 & & \\
+    \textbf{WS} & 0.238 & 0.262 & 0.241 & 0.181 & & \\
+    \textbf{RHSEG} & 0.257 & 0.597 & 0.185 & 0.447 & & \\
+    \textbf{Blobworld} & 0.354 & 0.383 & 0.444 & 0.378 & & \\
+    \hline
+\end{tabular}}
+\label{table:bgm_average}
+\end{table}
+
+\clearpage
+
+%----------------------- RAND/BGM MÉDIA/D.PADRÃO -----------------------%
+
+\begin{table}[top]
+\centering
+\caption{Valores médios e desvios padrões dos algoritmos testados com os índices de avaliação Rand e 
+BGM.}
+\begin{tabular}{|l||r|r||r|r|}
+    \hline
+    & \multicolumn{2}{|c|}{\textbf{Rand}} & \multicolumn{2}{|c|}{\textbf{BGM}} \\
+    \hline    
+    & \textbf{Média} & \textbf{D. Padrão} & \textbf{Média} & \textbf{D. Padrão} \\
+    \hline
+    \hline
+    \textbf{CSC+GNM} & 0.088 & 0.047 & 0.171 & 0.130 \\
+    \textbf{M\&S+GNM} & 0.089 & 0.040 & 0.187 & 0.140 \\
+    \textbf{Edison+GNM} & 0.085 & 0.042 & 0.171 & 0.133 \\
+    \textbf{WS+GNM} & 0.137 & 0.132 & 0.196 & 0.140 \\
+    \textbf{CSC} & 0.157 & 0.118 & 0.129 & 0.111 \\
+    \textbf{M\&S} & 0.165 & 0.074 & 0.276 & 0.152 \\
+    \textbf{JSEG} & 0.176 & 0.107 & 0.293 & 0.171 \\
+    \textbf{Edison} & 0.110 & 0.097 & 0.108 & 0.117 \\
+    \textbf{WS} & 0.130 & 0.130 & 0.245 & 0.172 \\
+    \textbf{RHSEG} & 0.173 & 0.076 & 0.298 & 0.208 \\
+    \textbf{Blobworld} & 0.313 & 0.094 & 0.383 & 0.082 \\
+    \hline
+\end{tabular}
+\label{table:randbgm_comparison}
+\end{table}
+
+%---------------------------- GRÁFICO RANDxBGM -----------------------------%
+
+\begin{figure}[h]
+\centering
+\subfigure[Rand]
+{
+	\label{image:randxbgm:a}
+	\includegraphics[scale=0.35]{imgs/image_sets/graphs/average_rand.png}
+}
+\subfigure[BGM]
+{
+	\label{image:randxbgm:b}
+	\includegraphics[scale=0.35]{imgs/image_sets/graphs/average_bgm.png}
+}
+\caption{Gráficos sumarizando os dados apresentados nas tabelas \ref{table:rand_average}, 
+\ref{table:bgm_average} e \ref{table:randbgm_comparison}.}
+\label{image:randxbgm}
+\end{figure}
+
+%---------------------------------------------------------------------------%
+
+Os resultados obtidos com as segmentações combinadas com o GNM obtiveram uma melhor média com a 
+medida Rand, exceto pela combinação WS+GNM, que mostrou valores comparáveis entre ambas medidas de 
+avaliação. O valor médio de Rand para CSC+GNM foi $0.087$, para M\&S+GNM for $0.089$, EDISON+GNM foi 
+$0.085$ e para o WS+GNM foi $0.137$. O melhor algoritmo após o GNM de acordo com Rand foi Edison com 
+uma média de $0.111$, enquanto a pior média foi obtida por Blobworld, $0.313$. O testes com o GNM 
+também apresentam a menor variação em termos de desvio padrão, todos por volta de $0.04$, exceto 
+para o WS+GNM que teve um desvio padrão de $0.132$. O menor desvio padrão depois do GNM foi obtido 
+por Mumford \& Shah, $0.074$. Então, de acordo com a avaliação feita medida Rand, as combinações de 
+GNM mostraram-se, em geral, as mais eficientes e estáveis.
+
+Os valores médios de BGM para as segmentações resultantes das combinações com GNM não foram os 
+melhores resultados, mas foram próximos ao melhor. O melhor resultado médio obtido com BGM foi 
+obtido por Edison, que teve uma média de $0.108$, enquanto o pior foi o Blobworld com $0.383$. Os 
+resultados do GNM foram os melhores após àqueles com Edison e CSC, que teve média de $0.129$. As 
+médias obtidas com GNM na avaliação realizada pela medida BGM foram $0.171$ para CSC+GNM e 
+Edison+GNM, $0.187$ para M\&S+GNM e $0.196$ para WS+GNM. O desvio padrão para todas as ombinações de 
+GNM foram similares, entre $0.130$ a $0.140$. O menor desvio padrão obtido com BGM pertence ao 
+Blobworld com $0.082$, sendo que este também obteve o pior valor médio nesta avaliação. Os próximos 
+melhores valores de desvio padrão foram $0.111$ e $0.117$ para, respectivamente, CSC e Edison. 
+Considerando que ambas as segmentações também obtiveram as melhores avaliações médias, em termos da 
+avaliação de BGM, CSC e Edison mostraram ser as técnicas mais estáveis e eficientes.
+
+%------------------------ GRÁFICO GNMxINDIVIDUAL ---------------------------%
+
+\begin{figure}[top]
+\centering
+\subfigure[Rand: CSC+GNM x CSC]
+{
+	\label{image:gnmxindividual:randcsc}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/cscgnmvscsc_rand.png}
+}
+\subfigure[BGM: CSC+GNM x CSC]
+{
+	\label{image:gnmxindividual:bgmcsc}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/cscgnmvscsc_bgm.png}
+}
+
+\subfigure[Rand: M\&S+GNM x M\&S]
+{
+	\label{image:gnmxindividual:randms}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/msgnmvsms_rand.png}
+}
+\subfigure[BGM: M\&S+GNM x M\&S]
+{
+	\label{image:gnmxindividual:bgmms}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/msgnmvsms_bgm.png}
+}
+
+\subfigure[Rand: WS+GNM x WS]
+{
+	\label{image:gnmxindividual:randws}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/wsgnmvsws_rand.png}
+}
+\subfigure[BGM: WS+GNM x WS]
+{
+	\label{image:gnmxindividual:bgmws}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/wsgnmvsws_bgm.png}
+}
+
+\subfigure[Rand: Edison+GNM x Edison]
+{
+	\label{image:gnmxindividual:randedison}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/edisongnmvsedison_rand.png}
+}
+\subfigure[BGM: Edison+GNM x Edison]
+{
+	\label{image:gnmxindividual:bgmedison}
+	\includegraphics[scale=0.4]{imgs/image_sets/graphs/edisongnmvsedison_bgm.png}
+}
+\caption{Comparação entre os valores médios de Rand e BGM entre as segmentações CSC, M\&S, WS e 
+Edison combinadas com GNM contra a aplicação individual destas.}
+\label{image:gnmxindividual}
+\end{figure}
+
+%----------------------------------------------------------------------------%
+
+Comparando os resultados do GNM combinado com CSC, M\&S, Edison e WS com os resultados obtidos 
+individualmente por estas técnicas (figura \ref{image:gnmxindividual}), o GNM mostra uma melhora 
+sensível para todas as técnicas quando tomando como referência a avaliação da medida Rand, exceto 
+para WS/WS+GNM, onde o valor médio de $0.130$ foi um pouco melhor que o obtido com a combinação com 
+GNM. Ainda em relação aos valores obtidos com Rand, M\&S/M\&S+GNM e CSC/CSC+GNM mostraram o maior 
+ganho de qualidade (respectivamente, $0.165$ contra $0.089$ e $0.157$ contra $0.087$). Os valores 
+resultantes da avaliação de BGM mostraram uma divisão, com CSC/CSC+GNM ($0.129$ contra $0.171$) e 
+Edison ($0.108$ contra $0.171$) mostrando melhores resultados quando aplicados individualmente 
+enquanto M\&S/M\&S+GNM ($0.277$ contra $0.187$) e WS/WS+GNM ($0.245$ contra $0.196$) foram 
+aperfeiçoados com a combinação com o GNM. Novamente, GNM mostra melhor performance quando avaliado 
+em termos das condições de Rand do que de BGM, apesar que os resultados com BGM ainda são melhores 
+que algumas outras técnicas e praticamente tão boas a outras melhor avaliadas.
+
+Considerando as abordagens das medidas de avaliação utilizadas, GNM mostra ser mais apto a produzir 
+resultados com melhor qualidade em termos de pareamento de regiões com as imagens de \textit{ground 
+truth} testadas. A avaliação de BGM beneficia abordagens mais agressivas, mesmo que a segmentação 
+avaliada seja de alguma forma sub-segmentada, como, por exemplo, apresentando alguns vazamentos de 
+segmentos. Rand fornece melhores valores para segmentações que preservam detalhes melhor. GNM prova 
+ser uma técnica confiável por ambas as medidas, especialmente em relação a medida a Rand, e para 
+ambas as medidas os resultados apresentaram alguns do melhores valores em termos de desvio de 
+padrão, também mostrando que o GNM é uma técnica estável. Outro algoritmo que se mostrou bastante 
+confiável por ambas medidas foi Edison, mostrando que a abordagem por \textit{mean-shift} também é 
+interessante quando buscam-se objetos formados por longos e progressivos gradientes de cores. 
+Blobworld teve os menores graus de similaridade avaliados, oque de certa forma era esperado, dada 
+suas características inerentes.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+
+\section{Resultados dos testes de desempenho de velocidade}
+
+Para validar empiricamente a abordagem, várias imagens ao ar livre foram 
+comparativamente processadas com um conjunto diferente de algoritmos. Para 
+permitir comparações, todos testes foram realizados em um mesmo computador com 
+os algoritmos apresentados abaixo.
+
+A adoção da base de dados de imagens de Berkeley \cite{martin2001database} é 
+feita novamente, pois é uma necessária e desejável escolha já é uma conjunto de 
+dados bem conhecido com a característica de possuir imagens de referência, 
+geradas a partir de segmentações manuais, para cada conjunto. A comparação com 
+outras técnicas atualmente desenvolvidas é facilitada aos leitores já que 
+diversos outros autores e publicações fazem uso desta mesma base de imagens.
+
+As técnicas de segmentação usadas nos seguintes testes foram: a) GNM aplicado 
+sobre imagens pré-segmentadas por CSC, com o limiar igual a 30 (tempo total será 
+a soma do tempo de execução de ambos os algoritmos); b) GNM aplicado sobre 
+imagens pré-segmentadas pela segmentação baseada na funcional de Mumford\&Shah, 
+com $lambda$ igual a 600 (tempo total será a soma do tempo de execução de ambos 
+os algoritmos); c) CSC, com um limiar selecionado para produzir o melhor 
+resultado; d) segmentação baseada na funcional de Mumford\&Shah, com um $lambda$ 
+selecionado para produzir o melhor resultado; e) JSEG 
+\cite{deng2001unsupervised}, uma técnica não supervisionada bem conhecida. 
+
+Tempo total de execução para cada conjunto com cada algoritmo selecionado é 
+mostrado na Tabela \ref{table:performance}. O tempo de execução para é obtido 
+através da diferença de dois marcadores de tempo, um no início e outro no fim do 
+processo de execução de cada algoritmo. Média e desvio padrão também são 
+apresentados.
+
+Os testes foram executados em um AMD Athlon 64 2.2 GHz e a unidade de tempo é 
+segundos.
+
+\begin{table}[h]
+\centering
+\caption{O tempo de execução total para o conjunto de imagens do conjunto de 
+dados de Berkeley processados usando um conjunto de técnicas selecionadas. O tempo médio 
+e desvio padrão são mostrados nas últimas linhas da tabela.}
+\begin{tabular}{|l||r|r|r|r|r|}
+	\hline
+    \textbf{Imagem} & \textbf{CSC+GNM} & \textbf{M\&S+GNM} & \textbf{CSC} & 
+\textbf{M\&S} & \textbf{JSEG} \\ %enumeração
+	\hline
+    \hline
+    \textbf{Média:} & $0.680s$ & $5.622s$ & $0.080s$ & $5.056s$ & $11.972s$ \\
+    \hline
+    \textbf{Desvio padrão:} & $0.059s$ & $0.941s$ & $0.010s$ & $0.829s$ & 
+$4.149s$ \\
+	\hline
+\end{tabular}
+\label{table:performance}
+\end{table}
+
+Como a tabela \ref{table:performance} mostra, a combinação de CSC e GNM mostra 
+resultados com um valor por volta de um segundo e meio, sendo mais lento somente 
+do que a aplicação individual do CSC. Isto era esperado, considerando os tempos 
+cumulativos de CSC+GNM. O tempo médio é várias vezes menor que o do 
+Mumford\&Shah e JSEG. Há pouca variação entre os tempos obtidos para o CSC+GNM, 
+enquanto novamente de acordo com a exceção do CSC individualmente, todas 
+técnicas mostram variações mais altas.
+
+Comparando CSC+GNM com M\&S+GNM, sem considerar a aplicação do pós-processamento, 
+observa-se que o GNM leva mais tempo em média no 
+caso CSC+GNM do que no caso M\&S+GNM. Isto é conseqüência da existência de vários 
+pequenos fragmentos que são produzidos pelo CSC, algo que não ocorre no 
+Mumford\&Shah. O resultado é um número maior de vértices do grafo que precisam 
+ser avaliados no caso do CSC+GNM. É importante perceber que, porém, o GNM tem 
+uma performance estável em ambos os casos, com pequena variação tanto no caso do 
+CSC+GNM quanto no M\&S+GNM.
+
+O pós-processamento, em média, consumiu 0.06s nos testes realizados aqui. A 
+implementação atual desse passo de pós-processamento foi feita de forma a se 
+integrar ao restante do processo do algoritmo e por isso age de forma otimizada. 
+Essa pequena perda de desempenho é facilmente compensada por uma maior qualidade 
+nos resultados em termos de imagem.
+
+A comparação realizada em termos de velocidade é simples e não pode ser vista como um 
+\textit{benchmark} definitivo, mas sim como um indicativo da performance do GNM e como esta é uma 
+técnica razoavelmente rápida enquanto também é capaz de produzir segmentações com qualidade 
+comparável com técnicas do estado da arte.
+
+%--------------------------------------------------------------------%
+%--------------------------------------------------------------------%
+

@@ -1,0 +1,9 @@
+INCLUDE_DIRECTORIES (
+  ${LABELING_LIB_INCLUDE}
+  ${FOGOUTILS_LIB_INCLUDE}
+  ${GNM_LIB_SOURCE_DIR}/Include
+)
+
+ADD_LIBRARY (gnm
+  ${GNM_LIB_SOURCE_DIR}/Source/gnm/Metaregion.cpp
+  ${GNM_LIB_SOURCE_DIR}/Source/gnm/Segmentation.cpp)
